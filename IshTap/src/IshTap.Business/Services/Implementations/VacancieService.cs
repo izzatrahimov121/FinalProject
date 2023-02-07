@@ -38,7 +38,7 @@ public class VacancieService : IVacancieService
         var vacancies = await _vacancieRepository.FindAll().ToListAsync();
         foreach (var vacancie in vacancies)
         {
-            if (vacancie.IsActive==true && vacancie.PlacamentTime <= DateTime.Now.AddDays(60))
+            if (vacancie.IsActive == true && vacancie.PlacamentTime <= DateTime.Now.AddDays(-60))
             {
                 vacancie.IsActive = false;
                 _vacancieRepository.Update(vacancie);
@@ -164,6 +164,16 @@ public class VacancieService : IVacancieService
         return vacancies;
     }
 
+    public async Task<List<Vacancie>?> FilterByDateJobtypeCategoryAsync(int date, int? jobtypeId = null, int? categoryId = null)
+    {
+        var resultDate = DateTime.Now.AddDays(-date);
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true
+                                                                    && v.PlacamentTime >= resultDate
+                                                                    && v.JobTypeId == jobtypeId
+                                                                    && v.CategoryId == categoryId).ToListAsync();
+        return vacancies;
+    }
+
     public async Task<List<Vacancie>> FilterByCategoryAsync(int categoryId)
     {
         var category = await _categoRyepository.FindByIdAsync(categoryId);
@@ -177,6 +187,30 @@ public class VacancieService : IVacancieService
     {
         var resultDate = DateTime.Now.AddDays(-date);
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.PlacamentTime >= resultDate).ToListAsync();
+        return vacancies;
+    }
+
+    public async Task<List<Vacancie>> FilterByConditionAsync(int categoryId, int jobtypeId, int minSalary, int maxSalary)
+    {
+        var activeVacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
+        if (activeVacancies == null)
+        {
+            throw new Exception("Heç bir şey tapılmadı");
+        }
+
+        var result = await _vacancieRepository.FindAll().Where(r => r.CategoryId == categoryId
+                                                                 && r.JobTypeId == jobtypeId
+                                                                 && r.Salary>=minSalary
+                                                                 && r.Salary<=maxSalary).ToListAsync();
+
+        return result;
+    }
+
+    //son 15 vacancie
+    public async Task<List<Vacancie>> LastVacanciesAsync()
+    {
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
+        var lastVacancies = await _vacancieRepository.FindAll().Where(v => v.Id >= vacancies.Count - 15).ToListAsync();
         return vacancies;
     }
 

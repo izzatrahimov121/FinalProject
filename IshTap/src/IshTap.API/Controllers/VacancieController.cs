@@ -163,18 +163,52 @@ public class VacancieController : Controller
     }
 
     [HttpGet("FiterByDate/{date}")]
-    public async Task<IActionResult> FiterByDate(int date)
+    public async Task<IActionResult> FiterByDateAsync(int date)
     {
         try
         {
-            return Ok(await _vacancieService.FiterByDateAsync(date)) ;
+            return Ok(await _vacancieService.FiterByDateAsync(date));
         }
         catch (Exception ex)
         {
-
-            throw;
+            return NotFound(ex.Message);
         }
     }
 
+
+    [HttpGet("FilterByDateJobtypeCategory/{date},{categoryId},{jobtypeId}")]
+    public async Task<IActionResult> FilterByDateJobtypeCategoryAsync(int date = 60, int? categoryId = null, int? jobtypeId = null)
+    {
+        try
+        {
+            var vacancies = await _vacancieService.FilterByDateJobtypeCategoryAsync(date, jobtypeId, categoryId);
+            return Ok(vacancies);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpGet("LastVacancies")]
+    public async Task<IActionResult> LastVacanciesAsync()
+    {
+        var last = await _vacancieService.LastVacanciesAsync();
+        return Ok(last);
+    }
+
+    [HttpGet("FilterByConditionAsync/{categoryId},{jobtypeId},{minSalary},{maxSalary}")]
+    public async Task<IActionResult> FilterByConditionAsync(int categoryId, int jobtypeId, int minSalary, int maxSalary)
+    {
+        try
+        {
+            var result = await _vacancieService.FilterByConditionAsync(categoryId, jobtypeId, minSalary, maxSalary);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
 
 }
