@@ -1,0 +1,184 @@
+﻿using AutoMapper;
+using IshTap.Business.DTOs.Vacancie;
+using IshTap.Business.Exceptions;
+using IshTap.Business.Services.Interfaces;
+using IshTap.Core.Entities;
+using IshTap.DataAccess.Repository.Implementations;
+using IshTap.DataAccess.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Linq.Expressions;
+
+namespace IshTap.Business.Services.Implementations;
+
+public class VacancieService : IVacancieService
+{
+
+    private readonly IVacancieRepository _vacancieRepository;
+    private readonly ICategoryRepository _categoRyepository;
+    private readonly IJobTypeRepository _jobTypeRepository;
+    private readonly IMapper _mapper;
+
+    public VacancieService(IVacancieRepository vacancieRepository,
+                           IMapper mapper,
+                           ICategoryRepository categoRyepository,
+                           IJobTypeRepository jobTypeRepository)
+    {
+        _vacancieRepository = vacancieRepository;
+        _mapper = mapper;
+        _categoRyepository = categoRyepository;
+        _jobTypeRepository = jobTypeRepository;
+    }
+
+
+
+
+    public async Task<List<VacancieDto>> FindAllAsync()
+    {
+        var vacancies = await _vacancieRepository.FindAll().ToListAsync();
+        foreach (var vacancie in vacancies)
+        {
+            if (vacancie.IsActive==true && vacancie.PlacamentTime <= DateTime.Now.AddDays(60))
+            {
+                vacancie.IsActive = false;
+                _vacancieRepository.Update(vacancie);
+            }
+        }
+        await _vacancieRepository.SaveAsync();
+        var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
+        return resultVacancies;
+    }
+
+
+    public async Task<Vacancie?> FindByIdAsync(int id)
+    {
+        var vacancie = await _vacancieRepository.FindByIdAsync(id);
+        if (vacancie == null)
+        {
+            throw new NotFoundException("not found");
+        }
+        vacancie.Review += 1;
+        //var result = _mapper.Map<VacancieDto>(vacancie);
+        _vacancieRepository.Update(vacancie);
+        await _vacancieRepository.SaveAsync();
+        return vacancie;
+    }
+
+
+    public async Task<List<VacancieDto>> FindByConditionAsync(Expression<Func<Vacancie, bool>> expression)
+    {
+        var courses = await _vacancieRepository.FindByCondition(expression).ToListAsync();
+        var result = _mapper.Map<List<VacancieDto>>(courses);
+        return result;
+    }
+
+
+
+
+    //Crud
+    public async Task CreateAsync(VacancieCreateDto vacancie)
+    {
+        if (vacancie is null) throw new ArgumentNullException();
+        //var resultCourse = _mapper.Map<Vacancie>(course);
+        Vacancie result = new()
+        {
+            Title = vacancie.Title,
+            JobDesctiption = vacancie.JobDesctiption,
+            PlacamentTime = DateTime.Now,
+            Image = vacancie.Image,
+            Address = vacancie.Address,
+            Responsibility = vacancie.Responsibility,
+            JobTypeId = vacancie.JobTypeId,
+            CategoryId = vacancie.CategoryId,
+            Salary = vacancie.Salary,
+            IsActive = true
+        };
+        var category = await _categoRyepository.FindByIdAsync(vacancie.CategoryId);
+        category.UsesCount += 1;
+        await _vacancieRepository.CreateAsync(result);
+        await _vacancieRepository.SaveAsync();
+    }
+
+
+    public async Task Delete(int id)
+    {
+        var baseCourse = await _vacancieRepository.FindByIdAsync(id);
+
+        if (baseCourse == null)
+        {
+            throw new NotFoundException("Not Found.");
+        }
+
+        _vacancieRepository.Delete(baseCourse);
+        await _vacancieRepository.SaveAsync();
+    }
+
+
+    public async Task UpdateAsync(int id, VacancieUpdateDto vacancie)
+    {
+        //if (id != course.Id)
+        //{
+        //    throw new BadRequestException("Enter valid ID.");
+        //}
+
+        var baseVacancie = await _vacancieRepository.FindByIdAsync(id);
+
+        if (baseVacancie == null)
+        {
+            throw new NotFoundException("Not Found.");
+        }
+
+        //var updateVacancie = _mapper.Map<Vacancie>(course);
+
+        baseVacancie.Title = vacancie.Title;
+        baseVacancie.JobDesctiption = vacancie.JobDesctiption;
+        baseVacancie.Image = vacancie.Image;
+        baseVacancie.Address = vacancie.Address;
+        baseVacancie.Responsibility = vacancie.Responsibility;
+        baseVacancie.JobTypeId = vacancie.JobTypeId;
+        baseVacancie.CategoryId = vacancie.CategoryId;
+        baseVacancie.Salary = vacancie.Salary;
+        //baseVacancie.Review = baseVacancie.Review;
+        //baseVacancie.PlacamentTime = baseVacancie.PlacamentTime;
+
+        _vacancieRepository.Update(baseVacancie);
+        await _vacancieRepository.SaveAsync();
+    }
+
+
+
+
+
+
+    //Filter
+    public async Task<List<Vacancie>> FilterByCategoryAndJobTypeAsync(int categoryId, int jobtypeId)
+    {
+        var category = await _categoRyepository.FindByIdAsync(categoryId);
+        if (category == null) { throw new ArgumentNullException(); }
+
+        var jobtype = await _jobTypeRepository.FindByIdAsync(jobtypeId);
+        if (jobtype == null) { throw new ArgumentNullException(); }
+
+
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.CategoryId == category.Id && v.JobTypeId == jobtype.Id).ToListAsync();
+        return vacancies;
+    }
+
+    public async Task<List<Vacancie>> FilterByCategoryAsync(int categoryId)
+    {
+        var category = await _categoRyepository.FindByIdAsync(categoryId);
+        if (category == null) { throw new ArgumentNullException(); }
+
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.CategoryId == category.Id).ToListAsync();
+        return vacancies;
+    }
+
+    public async Task<List<Vacancie>> FiterByDateAsync(int date)
+    {
+        var resultDate = DateTime.Now.AddDays(-date);
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.PlacamentTime >= resultDate).ToListAsync();
+        return vacancies;
+    }
+
+
+}

@@ -1,0 +1,17 @@
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\bin\Debug\net6.0\IshTap.Business.deps.json
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\bin\Debug\net6.0\IshTap.Business.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\bin\Debug\net6.0\IshTap.Business.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\bin\Debug\net6.0\IshTap.Core.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\bin\Debug\net6.0\IshTap.DataAccess.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\bin\Debug\net6.0\IshTap.Core.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\bin\Debug\net6.0\IshTap.DataAccess.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.csproj.AssemblyReference.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.AssemblyInfoInputs.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.AssemblyInfo.cs
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.csproj.CoreCompileInputs.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.csproj.CopyComplete
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\refint\IshTap.Business.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\IshTap.Business.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Business\obj\Debug\net6.0\ref\IshTap.Business.dll

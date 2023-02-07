@@ -1,0 +1,14 @@
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\bin\Debug\net6.0\IshTap.Core.deps.json
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\bin\Debug\net6.0\IshTap.Core.runtimeconfig.json
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\bin\Debug\net6.0\IshTap.Core.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\bin\Debug\net6.0\IshTap.Core.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.csproj.AssemblyReference.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.AssemblyInfoInputs.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.AssemblyInfo.cs
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.csproj.CoreCompileInputs.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\refint\IshTap.Core.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\IshTap.Core.genruntimeconfig.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.Core\obj\Debug\net6.0\ref\IshTap.Core.dll

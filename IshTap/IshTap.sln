@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{36FDC9C4-18E0-432A-A5CF-5306EE3FC926}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2A465A93-094E-4610-A0F0-74CEA9D0F782}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IshTap.Core", "src\IshTap.Core\IshTap.Core.csproj", "{D89A0016-77AC-401A-A7B5-5F578EBE2A6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IshTap.DataAccess", "src\IshTap.DataAccess\IshTap.DataAccess.csproj", "{70BC5C02-A5F7-435B-8531-409EB435E69F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IshTap.Business", "src\IshTap.Business\IshTap.Business.csproj", "{97AB1C0D-99DC-46F6-BCC9-42B8AD9452DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IshTap.API", "src\IshTap.API\IshTap.API.csproj", "{B89585FC-2B05-43CD-ABAE-01A0A5592DF8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D89A0016-77AC-401A-A7B5-5F578EBE2A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89A0016-77AC-401A-A7B5-5F578EBE2A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89A0016-77AC-401A-A7B5-5F578EBE2A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89A0016-77AC-401A-A7B5-5F578EBE2A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70BC5C02-A5F7-435B-8531-409EB435E69F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70BC5C02-A5F7-435B-8531-409EB435E69F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70BC5C02-A5F7-435B-8531-409EB435E69F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70BC5C02-A5F7-435B-8531-409EB435E69F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97AB1C0D-99DC-46F6-BCC9-42B8AD9452DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97AB1C0D-99DC-46F6-BCC9-42B8AD9452DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97AB1C0D-99DC-46F6-BCC9-42B8AD9452DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97AB1C0D-99DC-46F6-BCC9-42B8AD9452DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89585FC-2B05-43CD-ABAE-01A0A5592DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89585FC-2B05-43CD-ABAE-01A0A5592DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89585FC-2B05-43CD-ABAE-01A0A5592DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89585FC-2B05-43CD-ABAE-01A0A5592DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D89A0016-77AC-401A-A7B5-5F578EBE2A6F} = {36FDC9C4-18E0-432A-A5CF-5306EE3FC926}
+		{70BC5C02-A5F7-435B-8531-409EB435E69F} = {36FDC9C4-18E0-432A-A5CF-5306EE3FC926}
+		{97AB1C0D-99DC-46F6-BCC9-42B8AD9452DA} = {36FDC9C4-18E0-432A-A5CF-5306EE3FC926}
+		{B89585FC-2B05-43CD-ABAE-01A0A5592DF8} = {36FDC9C4-18E0-432A-A5CF-5306EE3FC926}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FAF6A13D-52AA-4C6F-AE9B-88EE47BCEF92}
+	EndGlobalSection
+EndGlobal

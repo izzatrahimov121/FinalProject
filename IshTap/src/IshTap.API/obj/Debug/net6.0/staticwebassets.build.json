@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "yPIPzmNNY+00fwffu8Ed03sqFy8cZUn8DhG3Ikfxa7M=",
+  "Source": "IshTap.API",
+  "BasePath": "_content/IshTap.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

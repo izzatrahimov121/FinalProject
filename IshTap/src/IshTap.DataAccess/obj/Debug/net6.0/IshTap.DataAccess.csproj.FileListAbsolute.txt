@@ -1,0 +1,17 @@
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\bin\Debug\net6.0\IshTap.DataAccess.deps.json
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\bin\Debug\net6.0\IshTap.DataAccess.runtimeconfig.json
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\bin\Debug\net6.0\IshTap.DataAccess.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\bin\Debug\net6.0\IshTap.DataAccess.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\bin\Debug\net6.0\IshTap.Core.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\bin\Debug\net6.0\IshTap.Core.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.csproj.AssemblyReference.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.AssemblyInfoInputs.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.AssemblyInfo.cs
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.csproj.CopyComplete
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\refint\IshTap.DataAccess.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.pdb
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\IshTap.DataAccess.genruntimeconfig.cache
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.DataAccess\obj\Debug\net6.0\ref\IshTap.DataAccess.dll
