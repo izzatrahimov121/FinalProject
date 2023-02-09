@@ -117,5 +117,22 @@ namespace IshTap.API.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
+
+        [HttpGet("Top5Category")]
+        public async Task<IActionResult> Top5Category()
+        {
+            try
+            {
+                return Ok(await _categoryService.Top5Category());
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

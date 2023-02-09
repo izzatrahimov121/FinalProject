@@ -62,7 +62,6 @@ C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.AssemblyInfoInputs.cache
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.AssemblyInfo.cs
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.csproj.CoreCompileInputs.cache
-C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\staticwebassets\msbuild.IshTap.API.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\staticwebassets\msbuild.build.IshTap.API.props
@@ -78,3 +77,5 @@ C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\refint
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.pdb
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.genruntimeconfig.cache
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\ref\IshTap.API.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\IshTap.API.staticwebassets.runtime.json
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.MvcApplicationPartsAssemblyInfo.cs

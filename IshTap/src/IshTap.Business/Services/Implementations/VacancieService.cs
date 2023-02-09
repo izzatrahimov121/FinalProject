@@ -3,7 +3,6 @@ using IshTap.Business.DTOs.Vacancie;
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
-using IshTap.DataAccess.Repository.Implementations;
 using IshTap.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -13,7 +12,7 @@ namespace IshTap.Business.Services.Implementations;
 
 public class VacancieService : IVacancieService
 {
-
+    //private readonly IWebHostEnvironment _env;
     private readonly IVacancieRepository _vacancieRepository;
     private readonly ICategoryRepository _categoRyepository;
     private readonly IJobTypeRepository _jobTypeRepository;
@@ -80,6 +79,8 @@ public class VacancieService : IVacancieService
     {
         if (vacancie is null) throw new ArgumentNullException();
         //var resultCourse = _mapper.Map<Vacancie>(course);
+
+
         Vacancie result = new()
         {
             Title = vacancie.Title,

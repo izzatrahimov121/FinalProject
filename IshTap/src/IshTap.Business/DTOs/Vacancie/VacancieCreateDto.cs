@@ -1,4 +1,5 @@
 ﻿using IshTap.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace IshTap.Business.DTOs.Vacancie;

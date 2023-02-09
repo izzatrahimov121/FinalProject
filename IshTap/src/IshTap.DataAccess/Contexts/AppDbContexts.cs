@@ -10,7 +10,15 @@ public class AppDbContexts : IdentityDbContext <AppUser>
     {
     }
 
+
     public DbSet<Category> Categories { get; set; }
+
+    //Vacancies
     public DbSet<JobType> JobTypes { get; set; }
     public DbSet<Vacancie> Vacancies { get; set; }
+
+    //CVs
+    public DbSet<CVs> CVs { get; set; }
+    public DbSet<Educations> Educations { get; set; }
+    public DbSet<Experiences> Experiences { get; set; }
 }

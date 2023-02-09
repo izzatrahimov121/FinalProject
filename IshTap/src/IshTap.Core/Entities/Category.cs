@@ -8,4 +8,5 @@ public class Category : IEntity
     public string? Name { get; set; }
     public int? UsesCount { get; set; }
     ICollection<Vacancie>? Vacancie { get; set;}
+    ICollection<CVs>? CVs { get; set;}
 }

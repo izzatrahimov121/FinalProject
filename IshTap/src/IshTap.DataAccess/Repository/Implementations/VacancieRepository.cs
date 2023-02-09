@@ -9,4 +9,5 @@ public class VacancieRepository : Repository<Vacancie>, IVacancieRepository
     public VacancieRepository(AppDbContexts contexts) : base(contexts)
     {
     }
+
 }

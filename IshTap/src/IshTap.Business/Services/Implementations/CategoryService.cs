@@ -2,10 +2,8 @@
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
-using IshTap.DataAccess.Repository.Implementations;
 using IshTap.DataAccess.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace IshTap.Business.Services.Implementations;
 
@@ -22,7 +20,7 @@ public class CategoryService : ICategoryService
     //crud
     public async Task CreateAsync(CategoryCreateDto category)
     {
-        if (category is null){ throw new ArgumentNullException(); }
+        if (category is null) { throw new ArgumentNullException(); }
         Category result = new()
         {
             Name = category.Name,
@@ -51,10 +49,11 @@ public class CategoryService : ICategoryService
         {
             throw new NotFoundException("Not Found.");
         }
-        baseCategory.Name= entity.Name;
+        baseCategory.Name = entity.Name;
         _categoryRepository.Update(baseCategory);
         await _categoryRepository.SaveAsync();
     }
+
 
 
 
@@ -72,6 +71,16 @@ public class CategoryService : ICategoryService
             throw new NotFoundException("not found");
         }
         return category;
+    }
+
+    public async Task<List<Category>> Top5Category()
+    {
+        var categoryes = await _categoryRepository.FindAll().ToListAsync();
+        if (categoryes is null)
+        {
+            throw new NotFoundException("Not Found");
+        }
+        return categoryes.OrderByDescending(c => c.UsesCount).ToList().Take(5).ToList();
     }
 
 }

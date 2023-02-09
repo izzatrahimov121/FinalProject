@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "yPIPzmNNY+00fwffu8Ed03sqFy8cZUn8DhG3Ikfxa7M=",
+  "Hash": "IP7nJh5th604q6ZSZmhgsMlD5o7g6X2HQiTlMJuxk1o=",
   "Source": "IshTap.API",
   "BasePath": "_content/IshTap.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "IshTap.API\\wwwroot",
+      "Source": "IshTap.API",
+      "ContentRoot": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\",
+      "BasePath": "_content/IshTap.API",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

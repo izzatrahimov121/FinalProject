@@ -31,12 +31,17 @@ builder.Services.AddAutoMapper(typeof(VacancieMapper).Assembly);
 
 //add repository
 builder.Services.AddScoped<IVacancieRepository, VacancieRepository>();
-builder.Services.AddScoped<IJobTypeRepository, JobTypeRepository>();
+
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IEducationRepository, EducationRepository>();
+builder.Services.AddScoped<IJobTypeRepository, JobTypeRepository>();
+builder.Services.AddScoped  <IExperiencesRepository, ExperiencesRepository>();
 
 //add service
 builder.Services.AddScoped<IVacancieService, VacancieService>();
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IEducationService, EducationService>();
 
 
 
