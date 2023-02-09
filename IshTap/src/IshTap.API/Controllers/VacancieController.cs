@@ -71,7 +71,7 @@ public class VacancieController : Controller
 
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, VacancieUpdateDto vacancie)
+    public async Task<IActionResult> Put(int id, [FromForm] VacancieUpdateDto vacancie)
     {
         try
         {
@@ -104,7 +104,7 @@ public class VacancieController : Controller
 
 
     [HttpPost("")]
-    public async Task<IActionResult> Post(VacancieCreateDto vacancie)
+    public async Task<IActionResult> Post([FromForm] VacancieCreateDto vacancie)
     {
         try
         {
