@@ -1,13 +1,12 @@
 ﻿using IshTap.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace IshTap.Business.DTOs.Vacancie;
 
 public class VacancieUpdateDto
 {
-
-    //public int Id { get; set; }
-    public string? Image { get; set; }
+    public IFormFile? Image { get; set; }
 
     [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(150, ErrorMessage = "Uzunluq 150 simvolu keçdi")]
     public string? Title { get; set; }

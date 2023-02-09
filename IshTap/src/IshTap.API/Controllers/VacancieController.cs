@@ -79,6 +79,14 @@ public class VacancieController : Controller
             return StatusCode((int)HttpStatusCode.OK);
 
         }
+        catch (IncorrectFileFormatException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (IncorrectFileSizeException ex)
+        {
+            return BadRequest(ex.Message);
+        }
         catch (BadRequestException ex)
         {
             return BadRequest(ex.Message);
@@ -95,7 +103,6 @@ public class VacancieController : Controller
     }
 
 
-
     [HttpPost("")]
     public async Task<IActionResult> Post(VacancieCreateDto vacancie)
     {
@@ -103,6 +110,14 @@ public class VacancieController : Controller
         {
             await _vacancieService.CreateAsync(vacancie);
             return StatusCode((int)HttpStatusCode.Created);
+        }
+        catch (IncorrectFileFormatException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (IncorrectFileSizeException ex)
+        {
+            return BadRequest(ex.Message);
         }
         catch (Exception)
         {

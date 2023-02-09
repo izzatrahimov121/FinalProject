@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using IshTap.Business.DTOs.Vacancie;
 using IshTap.Business.Exceptions;
+using IshTap.Business.HelperServices.Interfaces;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
 using IshTap.DataAccess.Repository.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Linq.Expressions;
@@ -13,6 +15,8 @@ namespace IshTap.Business.Services.Implementations;
 public class VacancieService : IVacancieService
 {
     //private readonly IWebHostEnvironment _env;
+    private readonly IHostingEnvironment _env;
+    private readonly IFileService _fileService;
     private readonly IVacancieRepository _vacancieRepository;
     private readonly ICategoryRepository _categoRyepository;
     private readonly IJobTypeRepository _jobTypeRepository;
@@ -21,12 +25,16 @@ public class VacancieService : IVacancieService
     public VacancieService(IVacancieRepository vacancieRepository,
                            IMapper mapper,
                            ICategoryRepository categoRyepository,
-                           IJobTypeRepository jobTypeRepository)
+                           IJobTypeRepository jobTypeRepository,
+                           IHostingEnvironment env,
+                           IFileService fileService)
     {
         _vacancieRepository = vacancieRepository;
         _mapper = mapper;
         _categoRyepository = categoRyepository;
         _jobTypeRepository = jobTypeRepository;
+        _env = env;
+        _fileService = fileService;
     }
 
 
@@ -47,8 +55,6 @@ public class VacancieService : IVacancieService
         var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
-
-
     public async Task<Vacancie?> FindByIdAsync(int id)
     {
         var vacancie = await _vacancieRepository.FindByIdAsync(id);
@@ -62,8 +68,6 @@ public class VacancieService : IVacancieService
         await _vacancieRepository.SaveAsync();
         return vacancie;
     }
-
-
     public async Task<List<VacancieDto>> FindByConditionAsync(Expression<Func<Vacancie, bool>> expression)
     {
         var courses = await _vacancieRepository.FindByCondition(expression).ToListAsync();
@@ -77,16 +81,16 @@ public class VacancieService : IVacancieService
     //Crud
     public async Task CreateAsync(VacancieCreateDto vacancie)
     {
-        if (vacancie is null) throw new ArgumentNullException();
+        if (vacancie is null) throw new ArgumentNullException(nameof(vacancie));
         //var resultCourse = _mapper.Map<Vacancie>(course);
-
+        string fileName = await _fileService.CopyFileAsync(vacancie.Image, _env.WebRootPath, "assets","img","vacancies");
 
         Vacancie result = new()
         {
             Title = vacancie.Title,
             JobDesctiption = vacancie.JobDesctiption,
             PlacamentTime = DateTime.Now,
-            Image = vacancie.Image,
+            Image = fileName,
             Address = vacancie.Address,
             Responsibility = vacancie.Responsibility,
             JobTypeId = vacancie.JobTypeId,
@@ -94,6 +98,7 @@ public class VacancieService : IVacancieService
             Salary = vacancie.Salary,
             IsActive = true
         };
+
         var category = await _categoRyepository.FindByIdAsync(vacancie.CategoryId);
         category.UsesCount += 1;
         await _vacancieRepository.CreateAsync(result);
@@ -117,30 +122,27 @@ public class VacancieService : IVacancieService
 
     public async Task UpdateAsync(int id, VacancieUpdateDto vacancie)
     {
-        //if (id != course.Id)
-        //{
-        //    throw new BadRequestException("Enter valid ID.");
-        //}
-
         var baseVacancie = await _vacancieRepository.FindByIdAsync(id);
 
         if (baseVacancie == null)
         {
             throw new NotFoundException("Not Found.");
         }
+        if (vacancie is null)
+        {
+            throw new ArgumentNullException(nameof(vacancie));
+        }
 
-        //var updateVacancie = _mapper.Map<Vacancie>(course);
+        string fileName = await _fileService.CopyFileAsync(vacancie.Image, _env.WebRootPath, "assets", "img", "vacancies");
 
         baseVacancie.Title = vacancie.Title;
         baseVacancie.JobDesctiption = vacancie.JobDesctiption;
-        baseVacancie.Image = vacancie.Image;
+        baseVacancie.Image = fileName;
         baseVacancie.Address = vacancie.Address;
         baseVacancie.Responsibility = vacancie.Responsibility;
         baseVacancie.JobTypeId = vacancie.JobTypeId;
         baseVacancie.CategoryId = vacancie.CategoryId;
         baseVacancie.Salary = vacancie.Salary;
-        //baseVacancie.Review = baseVacancie.Review;
-        //baseVacancie.PlacamentTime = baseVacancie.PlacamentTime;
 
         _vacancieRepository.Update(baseVacancie);
         await _vacancieRepository.SaveAsync();

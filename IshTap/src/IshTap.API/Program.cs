@@ -1,3 +1,5 @@
+using IshTap.Business.HelperServices.Implementations;
+using IshTap.Business.HelperServices.Interfaces;
 using IshTap.Business.Mappers;
 using IshTap.Business.Services.Implementations;
 using IshTap.Business.Services.Interfaces;
@@ -35,12 +37,15 @@ builder.Services.AddScoped<IVacancieRepository, VacancieRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IEducationRepository, EducationRepository>();
 builder.Services.AddScoped<IJobTypeRepository, JobTypeRepository>();
-builder.Services.AddScoped  <IExperiencesRepository, ExperiencesRepository>();
+builder.Services.AddScoped<IExperiencesRepository, ExperiencesRepository>();
 
 //add service
 builder.Services.AddScoped<IVacancieService, VacancieService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IJobTypeService, JobTypeService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IExperienceService, ExperienceService>();
 builder.Services.AddScoped<IEducationService, EducationService>();
 
 

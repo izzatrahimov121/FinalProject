@@ -6,7 +6,7 @@ namespace IshTap.Business.DTOs.Vacancie;
 
 public class VacancieCreateDto
 {
-    public string? Image { get; set; }
+    public IFormFile? Image { get; set; }
 
 
 
