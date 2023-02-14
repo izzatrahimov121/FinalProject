@@ -91,6 +91,7 @@ builder.Services.AddScoped<IExperiencesRepository, ExperiencesRepository>();
 builder.Services.AddScoped<IVacancieService, VacancieService>();
 builder.Services.AddScoped<ICVService, CVService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserManagerService, UserManagerService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IJobTypeService, JobTypeService>();

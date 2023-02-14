@@ -22,12 +22,11 @@ public class AccountsController : ControllerBase
 
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Register(RegisterDto registerDto)
+    public async Task<IActionResult> Register([FromForm]RegisterDto registerDto)
     {
         try
         {
-            await _authService.RegisterAsync(registerDto/*, VerificationCode*/);
-            //return RedirectToAction(nameof(Verification));
+            await _authService.RegisterAsync(registerDto);
             return Ok("User successfully created");
         }
         catch (UserCreateFailException ex)
@@ -41,7 +40,7 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Login(LoginDto loginDto)
+    public async Task<IActionResult> Login([FromForm]LoginDto loginDto)
     {
         try
         {
@@ -75,6 +74,7 @@ public class AccountsController : ControllerBase
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
+
 
     [HttpPost("ForgotPassword/{email}")]
     public async Task<IActionResult> ForgotPassword(string email)

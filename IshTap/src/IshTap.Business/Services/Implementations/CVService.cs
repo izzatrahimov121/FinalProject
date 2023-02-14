@@ -103,7 +103,6 @@ public class CVService : ICVService
         _cvRepository.Delete(cv);
         await _cvRepository.SaveAsync();
     }
-
     public async Task<List<CVs>> FindAllAsync()
     {
         var cvs = await _cvRepository.FindAll().ToListAsync();
