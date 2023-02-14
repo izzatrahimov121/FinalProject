@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\CVs\\627cc1b3-ac90-48c7-aafe-8856b1d70521indir1.png",
+      "PackagePath": "staticwebassets\\assets\\img\\CVs\\627cc1b3-ac90-48c7-aafe-8856b1d70521indir1.png"
+    },
+    {
+      "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\99bfef28-fbf7-452c-bfde-7e81f79f8b5findir.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\vacancies\\99bfef28-fbf7-452c-bfde-7e81f79f8b5findir.jpg"
+    },
+    {
+      "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\b4216f37-0077-41b1-bca5-ee4fca743b49indir1.png",
+      "PackagePath": "staticwebassets\\assets\\img\\vacancies\\b4216f37-0077-41b1-bca5-ee4fca743b49indir1.png"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.IshTap.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.IshTap.API.props",
+      "PackagePath": "build\\IshTap.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.IshTap.API.props",
+      "PackagePath": "buildMultiTargeting\\IshTap.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.IshTap.API.props",
+      "PackagePath": "buildTransitive\\IshTap.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -34,7 +34,7 @@ public class VacancieDto
 
     public bool? IsActive { get; set; }
 
-    public int? Review { get; set; }
+    public int? Views { get; set; }
 
     public int CategoryId { get; set; }
 

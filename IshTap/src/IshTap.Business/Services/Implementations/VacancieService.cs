@@ -45,7 +45,7 @@ public class VacancieService : IVacancieService
         var vacancies = await _vacancieRepository.FindAll().ToListAsync();
         foreach (var vacancie in vacancies)
         {
-            if (vacancie.IsActive == true && vacancie.PlacamentTime <= DateTime.Now.AddDays(-60))
+            if (vacancie.IsActive == true && DateTime.Now >= vacancie.ExpireOn)
             {
                 vacancie.IsActive = false;
                 _vacancieRepository.Update(vacancie);
@@ -62,7 +62,7 @@ public class VacancieService : IVacancieService
         {
             throw new NotFoundException("not found");
         }
-        vacancie.Review += 1;
+        vacancie.Views += 1;
         //var result = _mapper.Map<VacancieDto>(vacancie);
         _vacancieRepository.Update(vacancie);
         await _vacancieRepository.SaveAsync();
@@ -83,20 +83,21 @@ public class VacancieService : IVacancieService
     {
         if (vacancie is null) throw new ArgumentNullException(nameof(vacancie));
         //var resultCourse = _mapper.Map<Vacancie>(course);
-        string fileName = await _fileService.CopyFileAsync(vacancie.Image, _env.WebRootPath, "assets","img","vacancies");
+        string fileName = await _fileService.CopyFileAsync(vacancie.Image, _env.WebRootPath, "assets", "img", "vacancies");
 
         Vacancie result = new()
         {
             Title = vacancie.Title,
             JobDesctiption = vacancie.JobDesctiption,
-            PlacamentTime = DateTime.Now,
+            PublishedOn = DateTime.Now,
+            ExpireOn = DateTime.Now.AddDays(60),
             Image = fileName,
             Address = vacancie.Address,
             Responsibility = vacancie.Responsibility,
             JobTypeId = vacancie.JobTypeId,
             CategoryId = vacancie.CategoryId,
             Salary = vacancie.Salary,
-            IsActive = true
+            IsActive = true,
         };
 
         var category = await _categoRyepository.FindByIdAsync(vacancie.CategoryId);
@@ -104,7 +105,6 @@ public class VacancieService : IVacancieService
         await _vacancieRepository.CreateAsync(result);
         await _vacancieRepository.SaveAsync();
     }
-
 
     public async Task Delete(int id)
     {
@@ -118,7 +118,6 @@ public class VacancieService : IVacancieService
         _vacancieRepository.Delete(baseCourse);
         await _vacancieRepository.SaveAsync();
     }
-
 
     public async Task UpdateAsync(int id, VacancieUpdateDto vacancie)
     {
@@ -163,7 +162,7 @@ public class VacancieService : IVacancieService
         if (jobtype == null) { throw new ArgumentNullException(); }
 
 
-        var vacancies = await _vacancieRepository.FindAll().Where(v => v.CategoryId == category.Id && v.JobTypeId == jobtype.Id).ToListAsync();
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id && v.JobTypeId == jobtype.Id).ToListAsync();
         return vacancies;
     }
 
@@ -171,7 +170,7 @@ public class VacancieService : IVacancieService
     {
         var resultDate = DateTime.Now.AddDays(-date);
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true
-                                                                    && v.PlacamentTime >= resultDate
+                                                                    && v.PublishedOn >= resultDate
                                                                     && v.JobTypeId == jobtypeId
                                                                     && v.CategoryId == categoryId).ToListAsync();
         return vacancies;
@@ -182,14 +181,14 @@ public class VacancieService : IVacancieService
         var category = await _categoRyepository.FindByIdAsync(categoryId);
         if (category == null) { throw new ArgumentNullException(); }
 
-        var vacancies = await _vacancieRepository.FindAll().Where(v => v.CategoryId == category.Id).ToListAsync();
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id).ToListAsync();
         return vacancies;
     }
 
     public async Task<List<Vacancie>> FiterByDateAsync(int date)
     {
         var resultDate = DateTime.Now.AddDays(-date);
-        var vacancies = await _vacancieRepository.FindAll().Where(v => v.PlacamentTime >= resultDate).ToListAsync();
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.PublishedOn >= resultDate).ToListAsync();
         return vacancies;
     }
 
@@ -200,11 +199,11 @@ public class VacancieService : IVacancieService
         {
             throw new Exception("Heç bir şey tapılmadı");
         }
-
-        var result = await _vacancieRepository.FindAll().Where(r => r.CategoryId == categoryId
+        var result = await _vacancieRepository.FindAll().Where(r => r.IsActive == true
+                                                                 && r.CategoryId == categoryId
                                                                  && r.JobTypeId == jobtypeId
-                                                                 && r.Salary>=minSalary
-                                                                 && r.Salary<=maxSalary).ToListAsync();
+                                                                 && r.Salary >= minSalary
+                                                                 && r.Salary <= maxSalary).ToListAsync();
 
         return result;
     }

@@ -22,7 +22,9 @@ public class Vacancie : IEntity
     public int? Salary { get; set; }
 
 
-    public DateTime? PlacamentTime {get; set; }
+    public DateTime? PublishedOn {get; set; }
+
+    public DateTime? ExpireOn { get;set; }
 
 
     [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(700, ErrorMessage = "Uzunluq 700 simvolu keçdi")]
@@ -32,7 +34,7 @@ public class Vacancie : IEntity
     [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(700, ErrorMessage = "Uzunluq 700 simvolu keçdi")]
     public string? Responsibility { get; set; }
 
-    public int? Review { get; set; } = 0;
+    public int? Views { get; set; } = 0;
 
     public bool? IsActive { get; set; }
 

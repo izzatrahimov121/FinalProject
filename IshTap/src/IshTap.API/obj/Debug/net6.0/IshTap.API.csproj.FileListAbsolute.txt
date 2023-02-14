@@ -79,3 +79,8 @@ C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\ref\IshTap.API.dll
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\IshTap.API.staticwebassets.runtime.json
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\obj\Debug\net6.0\IshTap.API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\MailKit.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\MimeKit.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\RestSharp.dll

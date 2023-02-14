@@ -35,7 +35,7 @@ public class CVs:IEntity
     public string? City { get; set; }
 
 
-    [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(5)]
+    [Required(ErrorMessage = "Boş buraxmayın")]
     public int? MinSalary { get; set; }
 
 
@@ -47,13 +47,18 @@ public class CVs:IEntity
     public string? Details { get; set; }
 
 
-    [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(256)]
+    [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(256),DataType(DataType.EmailAddress)]
     public string? Email { get; set; }
 
 
     [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(20)]
     public string? Phone { get; set; }
 
+
+    public DateTime? PublishedOn { get; set; }
+    public DateTime? ExpireOn { get; set; }
+    public int? Views { get; set; } = 0;
+    public bool? IsActive { get; set; } = true;
 
 
     [Required(ErrorMessage = "Boş buraxmayın")]

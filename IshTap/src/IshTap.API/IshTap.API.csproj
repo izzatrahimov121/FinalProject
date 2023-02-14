@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.12">
 			<PrivateAssets>all</PrivateAssets>
@@ -22,11 +23,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\IshTap.Business\IshTap.Business.csproj" />
-		<ProjectReference Include="..\IshTap.DataAccess\IshTap.DataAccess.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\assest\img\vacancies\" />
+		<Folder Include="wwwroot\assets\img\CVs\" />
+		<Folder Include="wwwroot\assets\img\vacancies\" />
 	</ItemGroup>
 
 </Project>

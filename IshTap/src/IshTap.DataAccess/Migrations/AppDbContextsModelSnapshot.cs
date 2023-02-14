@@ -45,6 +45,9 @@ namespace IshTap.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -148,6 +151,9 @@ namespace IshTap.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("ExpireOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FatherName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -155,9 +161,11 @@ namespace IshTap.DataAccess.Migrations
                     b.Property<string>("Iamge")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("MinSalary")
                         .IsRequired()
-                        .HasMaxLength(5)
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -175,6 +183,9 @@ namespace IshTap.DataAccess.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<DateTime?>("PublishedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Skills")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -184,6 +195,9 @@ namespace IshTap.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
+
+                    b.Property<int?>("Views")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -265,6 +279,9 @@ namespace IshTap.DataAccess.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("ExpireOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -279,16 +296,13 @@ namespace IshTap.DataAccess.Migrations
                     b.Property<int>("JobTypeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("PlacamentTime")
+                    b.Property<DateTime?>("PublishedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Responsibility")
                         .IsRequired()
                         .HasMaxLength(700)
                         .HasColumnType("nvarchar(700)");
-
-                    b.Property<int?>("Review")
-                        .HasColumnType("int");
 
                     b.Property<int?>("Salary")
                         .IsRequired()
@@ -298,6 +312,9 @@ namespace IshTap.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("Views")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

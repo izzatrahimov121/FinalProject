@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IshTap.DataAccess.Contexts;
 
-public class AppDbContexts : IdentityDbContext <AppUser>
+public class AppDbContexts : IdentityDbContext<AppUser>
 {
     public AppDbContexts(DbContextOptions options) : base(options)
     {
