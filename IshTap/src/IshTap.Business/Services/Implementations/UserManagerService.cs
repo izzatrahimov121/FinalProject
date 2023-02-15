@@ -13,13 +13,12 @@ namespace IshTap.Business.Services.Implementations;
 public class UserManagerService : IUserManagerService
 {
     private readonly AppDbContexts _contexts;
+
     private readonly UserManager<AppUser> _userManager;
-    private readonly IMapper _mapper;
     public DbSet<AppUser> _table => _contexts.Set<AppUser>();
-    public UserManagerService(AppDbContexts contexts, IMapper mapper, UserManager<AppUser> userManager)
+    public UserManagerService(AppDbContexts contexts, UserManager<AppUser> userManager)
     {
         _contexts = contexts;
-        _mapper = mapper;
         _userManager = userManager;
     }
     public async Task<List<AppUserDto>> FindAllAsync()

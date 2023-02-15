@@ -84,3 +84,7 @@ C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\MailKi
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\MimeKit.dll
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\BouncyCastle.Crypto.dll
 C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\RestSharp.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\System.Web.Http.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\99455\Desktop\FinalProect\IshTap\src\IshTap.API\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

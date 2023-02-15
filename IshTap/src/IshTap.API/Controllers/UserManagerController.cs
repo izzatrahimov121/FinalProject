@@ -2,15 +2,13 @@
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Enums;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-
 namespace IshTap.API.Controllers
 {
+    [System.Web.Http.Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
     public class UserManagerController : ControllerBase
     {
         private readonly IUserManagerService _userManagerService;

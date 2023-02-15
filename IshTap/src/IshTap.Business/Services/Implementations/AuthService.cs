@@ -5,62 +5,110 @@ using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
 using IshTap.Core.Enums;
 using Microsoft.AspNetCore.Identity;
+using System.Web.Http.ModelBinding;
 
 namespace IshTap.Business.Services.Implementations;
 
 public class AuthService : IAuthService
 {
+    private static string? Fullname { get; set; }
+    private static string? Username { get; set; }
+    private static string? Email { get; set; }
+    private static string? Password { get; set; }
+    private static int? Code { get; set; }
+
+
     private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
+
     private readonly IMailService _mailService;
+    private readonly SignInManager<AppUser> _signInManager;
     private readonly ITokenHandler _tokenHandler;
 
     public AuthService(UserManager<AppUser> userManager
                      , IMailService mailService
-                     , ITokenHandler tokenHandler)
+                     , ITokenHandler tokenHandler,
+SignInManager<AppUser> signInManager)
     {
         _userManager = userManager;
         _mailService = mailService;
         _tokenHandler = tokenHandler;
+        _signInManager = signInManager;
     }
 
-
+    private async Task SendMailCode(string email)
+    {
+        Random rnd = new Random();
+        var code = rnd.Next(100000, 999999);
+        MailRequestDto mailRequest = new()
+        {
+            ToEmail = email,
+            Subject = "Account verification process",
+            Body = $"<h3>Doğrulama kodunuz: {code} </h3>" +
+            $"<br>Kodu heçkimlə paylaşmayın <br> " +
+            $"Copyright ©2023 İş Tap | All rights reserved.",
+        };
+        await _mailService.SendEmailAsync(mailRequest);
+        Code = code;
+    }
     public async Task RegisterAsync(RegisterDto registerDto)
     {
-        AppUser user = new()
+        if (registerDto is null)
         {
-            Email = registerDto.Email,
-            UserName = registerDto.Username,
-            Fullname = registerDto.Fullname,
-        };
-
-        var identityResult = await _userManager.CreateAsync(user, registerDto.Password);
-        if (!identityResult.Succeeded)
-        {
-            string errors = String.Empty;
-            int count = 0;
-            foreach (var error in identityResult.Errors)
-            {
-                errors += count != 0 ? $",{error.Description}" : $"{error.Description}";
-                count++;
-            }
-
-            throw new UserCreateFailException(errors);
+            throw new ArgumentNullException("Null value");
         }
-
-        var result = await _userManager.AddToRoleAsync(user, Roles.BasicUser.ToString());
-        if (!result.Succeeded)
+        Fullname = registerDto.Fullname;
+        Username = registerDto.Username;
+        Email = registerDto.Email;
+        Password = registerDto.Password;
+        await SendMailCode(Email);
+    }
+    public async Task VerificationAsync(int code)
+    {
+        if (Fullname == null || Username == null || Email == null || Password == null || Code == null || code == null)
         {
-            string errors = String.Empty;
-            int count = 0;
-            foreach (var error in result.Errors)
+            throw new ArgumentNullException();
+        }
+        if (Code == code)
+        {
+            AppUser user = new()
             {
-                errors += count != 0 ? $",{error.Description}" : $"{error.Description}";
-                count++;
+                Email = Email,
+                UserName = Username,
+                Fullname = Fullname,
+            };
+            var identityResult = await _userManager.CreateAsync(user, Password);
+            if (!identityResult.Succeeded)
+            {
+                string errors = String.Empty;
+                int count = 0;
+                foreach (var error in identityResult.Errors)
+                {
+                    errors += count != 0 ? $",{error.Description}" : $"{error.Description}";
+                    count++;
+                }
+
+                throw new UserCreateFailException(errors);
             }
-            throw new RoleCreateFailException(errors);
+
+            var result = await _userManager.AddToRoleAsync(user, Roles.BasicUser.ToString());
+            if (!result.Succeeded)
+            {
+                string errors = String.Empty;
+                int count = 0;
+                foreach (var error in result.Errors)
+                {
+                    errors += count != 0 ? $",{error.Description}" : $"{error.Description}";
+                    count++;
+                }
+                throw new RoleCreateFailException(errors);
+            }
+        }
+        else
+        {
+            throw new NotFoundException("Wrong code! Please try again");
         }
     }
+
 
     public async Task<TokenResponseDto> LoginAsync(LoginDto loginDto)
     {
@@ -69,21 +117,24 @@ public class AuthService : IAuthService
         {
             user = await _userManager.FindByEmailAsync(loginDto.UsernameOrEmail);
         }
-        if (user is null) throw new AuthFailException("Username or password incorrect!");
+        if (user is null) throw new AuthFailException("Username/Email or password incorrect!");
 
-        var check = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-        if (!check) throw new AuthFailException("Username or password incorrect!");
+        var signInResult = await _signInManager.PasswordSignInAsync(user, loginDto.Password,false, true);
+        if (signInResult.IsLockedOut)
+        {
+            throw new AuthFailException("You have been blocked for 5 minutes!");
+        }
+        if (!signInResult.Succeeded)
+        {
+            throw new AuthFailException("Username/Email or password incorrect!");
+        }
 
         //Create Jwt
-        var tokenResponse = await _tokenHandler.GenerateTokenAsync(user, 1);
+        var tokenResponse = await _tokenHandler.GenerateTokenAsync(user, 10);
         return tokenResponse;
     }
 
-    public async Task LogoutAsync()
-    {
-        await _signInManager.SignOutAsync();
-        //throw new LogoutFailException("user is not logged in");
-    }
+
 
     public async Task ForgotPasswordAsync(string email)
     {
@@ -92,17 +143,6 @@ public class AuthService : IAuthService
         {
             throw new AuthFailException("not user");
         }
-
-        Random rnd = new Random();
-        var code = rnd.Next(100000, 999999);
-        MailRequestDto mailRequest = new()
-        {
-            ToEmail = user.Email,
-            Subject = "Reset passvord",
-            Body = $"<h3>Doğrulama kodunuz:{code} </h3>" +
-            $"<br>Kodu heçkimlə paylaşmayın <br> " +
-            $"Copyright ©2023 İş Tap | All rights reserved.",
-        };
-        await _mailService.SendEmailAsync(mailRequest);
+        await SendMailCode(email);
     }
 }
