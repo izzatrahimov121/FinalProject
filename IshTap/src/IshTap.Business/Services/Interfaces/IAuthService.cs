@@ -8,5 +8,6 @@ public interface IAuthService
     Task<TokenResponseDto> LoginAsync(LoginDto loginDto);
     Task VerificationAsync(int code);
     //Task LogoutAsync();
-    Task ForgotPasswordAsync(string email);
+    Task ForgotPasswordAsync(ForgotPasswordDto forgotPassword, string link);
+    Task ResetPasswordAsync(ResetPasswordDto resetPassword);
 }

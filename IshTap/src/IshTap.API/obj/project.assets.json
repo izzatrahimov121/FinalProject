@@ -2981,6 +2981,7 @@
           "Microsoft.AspNet.WebApi.Core": "5.2.9",
           "Microsoft.AspNetCore.Hosting.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Hosting.Server.Abstractions": "2.2.0",
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.AspNetCore.Http.Features": "5.0.17",
           "Microsoft.AspNetCore.Identity": "2.2.0",
           "MimeKit": "3.4.3",
@@ -8745,6 +8746,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "IshTap.Business >= 1.0.0",
+      "Microsoft.AspNet.WebApi.Core >= 5.2.9",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.12",
       "Microsoft.AspNetCore.Hosting.Server.Abstractions >= 2.2.0",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.12",
@@ -8795,6 +8797,10 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
+          "Microsoft.AspNet.WebApi.Core": {
+            "target": "Package",
+            "version": "[5.2.9, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[6.0.12, )"

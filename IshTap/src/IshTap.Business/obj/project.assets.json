@@ -8364,6 +8364,7 @@
       "Microsoft.AspNet.WebApi.Core >= 5.2.9",
       "Microsoft.AspNetCore.Hosting.Abstractions >= 2.2.0",
       "Microsoft.AspNetCore.Hosting.Server.Abstractions >= 2.2.0",
+      "Microsoft.AspNetCore.Http.Abstractions >= 2.2.0",
       "Microsoft.AspNetCore.Http.Features >= 5.0.17",
       "Microsoft.AspNetCore.Identity >= 2.2.0",
       "MimeKit >= 3.4.3",
@@ -8434,6 +8435,10 @@
             "version": "[2.2.0, )"
           },
           "Microsoft.AspNetCore.Hosting.Server.Abstractions": {
+            "target": "Package",
+            "version": "[2.2.0, )"
+          },
+          "Microsoft.AspNetCore.Http.Abstractions": {
             "target": "Package",
             "version": "[2.2.0, )"
           },

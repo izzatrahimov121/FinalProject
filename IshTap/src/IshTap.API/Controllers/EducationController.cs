@@ -7,110 +7,110 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace IshTap.API.Controllers
+namespace IshTap.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class EducationController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EducationController : ControllerBase
+    private readonly IEducationService _educationService;
+
+    public EducationController(IEducationService educationService)
     {
-        private readonly IEducationService _educationService;
+        _educationService = educationService;
+    }
 
-        public EducationController(IEducationService educationService)
+    [HttpGet("")]
+    public async Task<IActionResult> Get()
+    {
+        try
         {
-            _educationService = educationService;
+            return Ok(await _educationService.FindAllAsync());
         }
-
-        [HttpGet("")]
-        public async Task<IActionResult> Get()
+        catch (NotFoundException ex)
         {
-            try
-            {
-                return Ok(await _educationService.FindAllAsync());
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return NotFound(ex.Message);
         }
-
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        catch (Exception ex)
         {
-            try
-            {
-                return Ok(await _educationService.FindByIdAsync(id));
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest(ex.Message);
         }
+    }
 
-        [HttpPost("")]
-        public async Task<IActionResult> Create(EducationCreateDto education)
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        try
         {
-            try
-            {
-                await _educationService.CreateAsync(education);
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch(ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            return Ok(await _educationService.FindByIdAsync(id));
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id,EducationUpdateDto education)
+        catch (ArgumentNullException ex)
         {
-            try
-            {
-                await _educationService.UpdateAsync(id, education);
-                return StatusCode((int)HttpStatusCode.OK);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            return NotFound(ex.Message);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        catch (Exception ex)
         {
-            try
-            {
-                await _educationService.Delete(id);
-                return Ok("Deleted");
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("")]
+    public async Task<IActionResult> Create(EducationCreateDto education)
+    {
+        try
+        {
+            await _educationService.CreateAsync(education);
+            return StatusCode((int)HttpStatusCode.Created);
+        }
+        catch(ArgumentNullException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id,EducationUpdateDto education)
+    {
+        try
+        {
+            await _educationService.UpdateAsync(id, education);
+            return StatusCode((int)HttpStatusCode.OK);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+
+            return Ok("Deleted");
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (FormatException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
 }

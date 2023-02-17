@@ -1,24 +1,33 @@
 ﻿using IshTap.Business.DTOs.Auth;
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
+using IshTap.Core.Entities;
 using IshTap.Core.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Security.Claims;
+
 namespace IshTap.API.Controllers
 {
-    [System.Web.Http.Authorize(Roles ="Admin")]
+    [System.Web.Http.Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class UserManagerController : ControllerBase
     {
         private readonly IUserManagerService _userManagerService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public UserManagerController(IUserManagerService userManagerService)
+        public UserManagerController(IUserManagerService userManagerService, UserManager<AppUser> userManager)
         {
             _userManagerService = userManagerService;
+            _userManager = userManager;
         }
 
-        [HttpGet("")]
+        [HttpGet("AllUser")]
         public async Task<IActionResult> Get()
         {
             try
@@ -31,7 +40,7 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetByIdUser")]
         public async Task<IActionResult> GetById(string id)
         {
             try
@@ -49,8 +58,8 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> CreatedUser([FromForm]RegisterDto registerDto, [FromForm]Roles role)
+        [HttpPost("CreatedUser")]
+        public async Task<IActionResult> CreatedUser(RegisterDto registerDto,Roles role)
         {
             try
             {
@@ -67,8 +76,8 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> UpdateUserRole([FromForm]string id, [FromForm]Roles role)
+        [HttpPost("UpdateUserRole")]
+        public async Task<IActionResult> UpdateUserRole(string id, Roles role)
         {
             try
             {
@@ -85,8 +94,8 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> AddUserRole([FromForm] string id, [FromForm]Roles role)
+        [HttpPost("AddUserRole")]
+        public async Task<IActionResult> AddUserRole(string id, Roles role)
         {
             try
             {
@@ -103,8 +112,8 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> RemoveUserRoleAsync([FromForm] string id, [FromForm] Roles role)
+        [HttpPost("RemoveUserRoleAsync")]
+        public async Task<IActionResult> RemoveUserRoleAsync(string id, Roles role)
         {
             try
             {
@@ -121,8 +130,8 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Deleted([FromForm]string id)
+        [HttpDelete("DeletedUser")]
+        public async Task<IActionResult> Deleted(string id)
         {
             try
             {

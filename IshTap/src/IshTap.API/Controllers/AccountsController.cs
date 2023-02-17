@@ -2,10 +2,10 @@
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
-using IshTap.Core.Enums;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
 
 namespace IshTap.API.Controllers;
@@ -14,17 +14,20 @@ namespace IshTap.API.Controllers;
 [ApiController]
 public class AccountsController : ControllerBase
 {
+
     private readonly IAuthService _authService;
+    private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
-    public AccountsController(IAuthService authService, SignInManager<AppUser> signInManager)
+    public AccountsController(IAuthService authService, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
     {
         _authService = authService;
         _signInManager = signInManager;
+        _userManager = userManager;
     }
 
 
-    [HttpPost("[action]")]
-    public async Task<IActionResult> Register([FromForm] RegisterDto registerDto)
+    [HttpPost("Register")]
+    public async Task<IActionResult> Register( RegisterDto registerDto)
     {
         try
         {
@@ -41,15 +44,15 @@ public class AccountsController : ControllerBase
         }
     }
 
-    [HttpPost("[action]")]
-    public async Task<IActionResult> Verification ([FromForm] int code)
+    [HttpPost("Verification")]
+    public async Task<IActionResult> Verification(int code)
     {
         try
         {
             await _authService.VerificationAsync(code);
             return Ok("User successfully created");
         }
-        catch(ArgumentNullException ex)
+        catch (ArgumentNullException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -63,13 +66,14 @@ public class AccountsController : ControllerBase
         }
     }
 
-    [HttpPost("[action]")]
-    public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login(LoginDto loginDto)
     {
         try
         {
-            var tokenResponse = await _authService.LoginAsync(loginDto);
-            return Ok(tokenResponse);
+            var token = await _authService.LoginAsync(loginDto);
+            //Token = token;
+            return Ok(token);
         }
         catch (AuthFailException ex)
         {
@@ -99,18 +103,34 @@ public class AccountsController : ControllerBase
         }
     }
 
-
-    [HttpPost("ForgotPassword/{email}")]
-    public async Task<IActionResult> ForgotPassword(string email)
+    [HttpPost("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPassword)
     {
         try
         {
-            await _authService.ForgotPasswordAsync(email);
-            return Ok("Kod gonderildi. Zehmet olmasa mailinize baxin");
+            var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
+            if (user == null) { throw new NotFoundException("User not found"); }
+            var token = _userManager.GeneratePasswordResetTokenAsync(user);
+            var link = Url.Action("ResetPassword", "Accounts", new { token, email = user.Email }, Request.Scheme);
+            await _authService.ForgotPasswordAsync(forgotPassword ,link);
+            return Ok("Link sent. Please check your email");
         }
         catch (Exception)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
+    }
+
+    [HttpPost("ResetPassword")]
+
+    public async Task<IActionResult> ResetPassword()
+    {
+        ResetPasswordDto resetPassword = new()
+        {
+            NewPassword = "Test@123",
+            ConfirmNewPassword = "Test@123"
+        };
+        await _authService.ResetPasswordAsync(resetPassword);
+        return Ok("Tamam");
     }
 }

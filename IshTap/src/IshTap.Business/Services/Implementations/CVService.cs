@@ -5,6 +5,7 @@ using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
 using IshTap.DataAccess.Repository.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IshTap.Business.Services.Implementations;

@@ -48,7 +48,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 })
     .AddEntityFrameworkStores<AppDbContexts>()
-    .AddEntityFrameworkStores<AppDbContexts>();
+    .AddEntityFrameworkStores<AppDbContexts>()
+    .AddDefaultTokenProviders();//for frogot passwod
 
 
 
@@ -72,8 +73,6 @@ builder.Services.AddAuthentication(options =>
         LifetimeValidator = (_, expires, _, _) => expires != null ? expires > DateTime.UtcNow : false,
     };
 });
-
-
 builder.Services.AddAuthorization();
 
 
