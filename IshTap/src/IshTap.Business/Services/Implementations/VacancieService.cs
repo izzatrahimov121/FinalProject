@@ -205,29 +205,7 @@ public class VacancieService : IVacancieService
 
 
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id && v.JobTypeId == jobtype.Id).ToListAsync();
-        List<VacancieDto> resultVacancies = new List<VacancieDto>();
-        foreach (var vacancie in vacancies)
-        {
-            var category1 = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
-            var jobtype1 = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
-            VacancieDto result = new()
-            {
-                Id = vacancie.Id,
-                Image = vacancie.Image,
-                Title = vacancie.Title,
-                Address = vacancie.Address,
-                Salary = vacancie.Salary,
-                PublishedOn = vacancie.PublishedOn,
-                ExpireOn = vacancie.ExpireOn,
-                JobDesctiption = vacancie.JobDesctiption,
-                Responsibility = vacancie.Responsibility,
-                IsActive = vacancie.IsActive,
-                Views = vacancie.Views,
-                Category = category1?.Name,
-                JobType = jobtype1?.Type
-            };
-            resultVacancies.Add(result);
-        }
+        var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
 
@@ -238,29 +216,7 @@ public class VacancieService : IVacancieService
                                                                     && v.PublishedOn >= resultDate
                                                                     && v.JobTypeId == jobtypeId
                                                                     && v.CategoryId == categoryId).ToListAsync();
-        List<VacancieDto> resultVacancies = new List<VacancieDto>();
-        foreach (var vacancie in vacancies)
-        {
-            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
-            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
-            VacancieDto result = new()
-            {
-                Id = vacancie.Id,
-                Image = vacancie.Image,
-                Title = vacancie.Title,
-                Address = vacancie.Address,
-                Salary = vacancie.Salary,
-                PublishedOn = vacancie.PublishedOn,
-                ExpireOn = vacancie.ExpireOn,
-                JobDesctiption = vacancie.JobDesctiption,
-                Responsibility = vacancie.Responsibility,
-                IsActive = vacancie.IsActive,
-                Views = vacancie.Views,
-                Category = category?.Name,
-                JobType = jobtype?.Type
-            };
-            resultVacancies.Add(result);
-        }
+        var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
 
@@ -270,29 +226,7 @@ public class VacancieService : IVacancieService
         if (category == null) { throw new ArgumentNullException(); }
 
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id).ToListAsync();
-        List<VacancieDto> resultVacancies = new List<VacancieDto>();
-        foreach (var vacancie in vacancies)
-        {
-            var category2 = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
-            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
-            VacancieDto result = new()
-            {
-                Id = vacancie.Id,
-                Image = vacancie.Image,
-                Title = vacancie.Title,
-                Address = vacancie.Address,
-                Salary = vacancie.Salary,
-                PublishedOn = vacancie.PublishedOn,
-                ExpireOn = vacancie.ExpireOn,
-                JobDesctiption = vacancie.JobDesctiption,
-                Responsibility = vacancie.Responsibility,
-                IsActive = vacancie.IsActive,
-                Views = vacancie.Views,
-                Category = category2?.Name,
-                JobType = jobtype?.Type
-            };
-            resultVacancies.Add(result);
-        }
+        var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
 
@@ -300,29 +234,7 @@ public class VacancieService : IVacancieService
     {
         var resultDate = DateTime.Now.AddDays(-date);
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.PublishedOn >= resultDate).ToListAsync();
-        List<VacancieDto> resultVacancies = new List<VacancieDto>();
-        foreach (var vacancie in vacancies)
-        {
-            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
-            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
-            VacancieDto result = new()
-            {
-                Id = vacancie.Id,
-                Image = vacancie.Image,
-                Title = vacancie.Title,
-                Address = vacancie.Address,
-                Salary = vacancie.Salary,
-                PublishedOn = vacancie.PublishedOn,
-                ExpireOn = vacancie.ExpireOn,
-                JobDesctiption = vacancie.JobDesctiption,
-                Responsibility = vacancie.Responsibility,
-                IsActive = vacancie.IsActive,
-                Views = vacancie.Views,
-                Category = category?.Name,
-                JobType = jobtype?.Type
-            };
-            resultVacancies.Add(result);
-        }
+        var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
 
@@ -333,35 +245,13 @@ public class VacancieService : IVacancieService
         {
             throw new Exception("Heç bir şey tapılmadı");
         }
-        var vacancies = await _vacancieRepository.FindAll().Where(r => r.IsActive == true
-                                                                 && r.CategoryId == categoryId
-                                                                 && r.JobTypeId == jobtypeId
-                                                                 && r.Salary >= minSalary
-                                                                 && r.Salary <= maxSalary).ToListAsync();
-        List<VacancieDto> resultVacancies = new List<VacancieDto>();
-        foreach (var vacancie in vacancies)
-        {
-            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
-            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
-            VacancieDto result = new()
-            {
-                Id = vacancie.Id,
-                Image = vacancie.Image,
-                Title = vacancie.Title,
-                Address = vacancie.Address,
-                Salary = vacancie.Salary,
-                PublishedOn = vacancie.PublishedOn,
-                ExpireOn = vacancie.ExpireOn,
-                JobDesctiption = vacancie.JobDesctiption,
-                Responsibility = vacancie.Responsibility,
-                IsActive = vacancie.IsActive,
-                Views = vacancie.Views,
-                Category = category?.Name,
-                JobType = jobtype?.Type
-            };
-            resultVacancies.Add(result);
-        }
-        return resultVacancies;
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
+        if (categoryId != null) { vacancies = vacancies.Where(v => v.CategoryId == categoryId).ToList(); }
+        if (jobtypeId != null)  { vacancies = vacancies.Where(v => v.JobTypeId == jobtypeId).ToList(); }
+        if (minSalary != null)  { vacancies = vacancies.Where(v => v.Salary >= minSalary).ToList(); }
+        if (maxSalary != null)  { vacancies = vacancies.Where(v => v.Salary <= maxSalary).ToList(); }
+        var result = _mapper.Map<List<VacancieDto>>(vacancies);
+        return result;
     }
 
     //son 15 vacancie
@@ -369,29 +259,7 @@ public class VacancieService : IVacancieService
     {
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
         var lastVacancies = await _vacancieRepository.FindAll().Where(v => v.Id >= vacancies.Count - 15).ToListAsync();
-        List<VacancieDto> resultVacancies = new List<VacancieDto>();
-        foreach (var vacancie in vacancies)
-        {
-            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
-            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
-            VacancieDto result = new()
-            {
-                Id = vacancie.Id,
-                Image = vacancie.Image,
-                Title = vacancie.Title,
-                Address = vacancie.Address,
-                Salary = vacancie.Salary,
-                PublishedOn = vacancie.PublishedOn,
-                ExpireOn = vacancie.ExpireOn,
-                JobDesctiption = vacancie.JobDesctiption,
-                Responsibility = vacancie.Responsibility,
-                IsActive = vacancie.IsActive,
-                Views = vacancie.Views,
-                Category = category?.Name,
-                JobType = jobtype?.Type
-            };
-            resultVacancies.Add(result);
-        }
+        var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
 

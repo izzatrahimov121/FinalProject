@@ -39,7 +39,7 @@ public class Vacancie : IEntity
     public bool? IsActive { get; set; }
 
     [Required]
-    public string? UserId { get; set; }
+    public string UserId { get; set; }
     public AppUser? AppUser { get; set; }
 
     [Required]
