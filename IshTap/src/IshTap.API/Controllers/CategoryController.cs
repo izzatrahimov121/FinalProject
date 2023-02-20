@@ -1,9 +1,7 @@
 ﻿using IshTap.Business.DTOs.Category;
-using IshTap.Business.DTOs.Vacancie;
 using IshTap.Business.Exceptions;
-using IshTap.Business.Services.Implementations;
 using IshTap.Business.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +9,7 @@ namespace IshTap.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Member")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;

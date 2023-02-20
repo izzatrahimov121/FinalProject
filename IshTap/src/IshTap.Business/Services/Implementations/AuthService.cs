@@ -5,8 +5,8 @@ using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
 using IshTap.Core.Enums;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
+using Newtonsoft.Json.Linq;
+using static System.Net.WebRequestMethods;
 
 namespace IshTap.Business.Services.Implementations;
 
@@ -37,21 +37,19 @@ public class AuthService : IAuthService
         _signInManager = signInManager;
     }
 
-    private async Task SendMailResetToken(string email,string link)
+    private async Task SendMailResetToken(string email, string url)
     {
         MailRequestDto mailRequest = new()
         {
             ToEmail = email,
-            Subject = "Account verification process",
-            Body = $"<a href = \"{link}\"> {link} </a>" +
-           $"<br>Kodu heçkimlə paylaşmayın <br> " +
-           $"Copyright ©2023 İş Tap | All rights reserved.",
+            Subject = "Şifre Sıfırlama",
+            Body = $"<strong>Şifrenizi sıfırlamak için {url} <a href='{url}'>buraya tıklayın</a></strong><br>" +
+                $"Copyright ©2023 İş Tap | All rights reserved.",
         };
         await _mailService.SendEmailAsync(mailRequest);
     }
     private async Task SendMailCode(string email)
     {
-
         Random rnd = new Random();
         var code = rnd.Next(100000, 999999);
         MailRequestDto mailRequest = new()
@@ -119,7 +117,7 @@ public class AuthService : IAuthService
         {
             throw new ArgumentNullException();
         }
-        if (DateTime.Now>=CodeLifeTime)
+        if (DateTime.Now >= CodeLifeTime)
         {
             throw new NotFoundException("Time is over!");
         }
@@ -146,20 +144,30 @@ public class AuthService : IAuthService
         if (!check) throw new AuthFailException("Username or password incorrect!");
 
         //Create Jwt
-        var tokenResponse = await _tokenHandler.GenerateTokenAsync(user, 10);
+        var tokenResponse = await _tokenHandler.GenerateTokenAsync(user, 120);
 
         return tokenResponse;
     }
-    public async Task ForgotPasswordAsync(ForgotPasswordDto forgotPassword, string link)
+    public async Task ForgotPasswordAsync(ForgotPasswordDto forgotPassword)
     {
-        //var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
-        //if (user == null) { throw new NotFoundException("User not found"); }
-        await SendMailResetToken(forgotPassword.Email, link);
+        var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
+        if (user == null) { throw new NotFoundException("User not found"); }
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var callbackUrl = $"http://localhost:5256/api/Accounts/resetpassword?email={forgotPassword.Email}&token={System.Web.HttpUtility.UrlEncode(token)}";
+        await SendMailResetToken(forgotPassword.Email, callbackUrl);
     }
-
-    public async Task ResetPasswordAsync(ResetPasswordDto resetPassword)
+    public async Task ResetPasswordAsync(string email, string token ,ResetPasswordDto resetPassword)
     {
-        var test = 1;
-        test = 3;
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        var result = await _userManager.ResetPasswordAsync(user, token, resetPassword.NewPassword);
+        if (!result.Succeeded)
+        {
+            throw new NotFoundException("Erorr");
+        }
     }
 }

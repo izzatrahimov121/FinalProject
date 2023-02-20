@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace IshTap.DataAccess.Repository.Interfaces;
 
-public interface IRepository<T> where T : class,IEntity, new()
+public interface IRepository<T> where T : class, IEntity, new()
 {
     IQueryable<T> FindAll();
     IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool IsTracking = true);

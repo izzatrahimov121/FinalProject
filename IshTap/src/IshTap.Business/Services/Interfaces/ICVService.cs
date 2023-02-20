@@ -7,10 +7,10 @@ namespace IshTap.Business.Services.Interfaces;
 
 public interface ICVService
 {
-    Task CreateAsync(CVCreatedDto cv);
+    Task CreateAsync(string userId, CVCreatedDto cv);
     Task UpdateAsync(int id, CVUpdateDto cv);
     Task Delete(int id);
-    Task<List<CVs>> FindAllAsync();
-    Task<CVs?> FindByIdAsync(int id);
-    Task<List<CVs>> LastVacanciesAsync();
+    Task<List<CVDto>> FindAllAsync();
+    Task<CVDto?> FindByIdAsync(int id);
+    Task<List<CVDto>> LastVacanciesAsync();
 }

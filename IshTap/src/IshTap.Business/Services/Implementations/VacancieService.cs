@@ -18,7 +18,7 @@ public class VacancieService : IVacancieService
     private readonly IHostingEnvironment _env;
     private readonly IFileService _fileService;
     private readonly IVacancieRepository _vacancieRepository;
-    private readonly ICategoryRepository _categoRyepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IJobTypeRepository _jobTypeRepository;
     private readonly IMapper _mapper;
 
@@ -31,7 +31,7 @@ public class VacancieService : IVacancieService
     {
         _vacancieRepository = vacancieRepository;
         _mapper = mapper;
-        _categoRyepository = categoRyepository;
+        _categoryRepository = categoRyepository;
         _jobTypeRepository = jobTypeRepository;
         _env = env;
         _fileService = fileService;
@@ -43,19 +43,42 @@ public class VacancieService : IVacancieService
     public async Task<List<VacancieDto>> FindAllAsync()
     {
         var vacancies = await _vacancieRepository.FindAll().ToListAsync();
+        //foreach (var vacancie in vacancies)
+        //{
+        //    if (vacancie.IsActive == true && DateTime.Now >= vacancie.ExpireOn)
+        //    {
+        //        vacancie.IsActive = false;
+        //        _vacancieRepository.Update(vacancie);
+        //    }
+        //}
+        //await _vacancieRepository.SaveAsync();
+        //var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
+        List<VacancieDto> resultVacancies = new List<VacancieDto>();
         foreach (var vacancie in vacancies)
         {
-            if (vacancie.IsActive == true && DateTime.Now >= vacancie.ExpireOn)
+            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+            VacancieDto result = new()
             {
-                vacancie.IsActive = false;
-                _vacancieRepository.Update(vacancie);
-            }
+                Id = vacancie.Id,
+                Image = vacancie.Image,
+                Title = vacancie.Title,
+                Address = vacancie.Address,
+                Salary = vacancie.Salary,
+                PublishedOn = vacancie.PublishedOn,
+                ExpireOn= vacancie.ExpireOn,
+                JobDesctiption = vacancie.JobDesctiption,
+                Responsibility = vacancie.Responsibility,
+                IsActive = vacancie.IsActive,
+                Views = vacancie.Views,
+                Category = category?.Name,
+                JobType = jobtype?.Type
+            };
+            resultVacancies.Add(result);
         }
-        await _vacancieRepository.SaveAsync();
-        var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
-    public async Task<Vacancie?> FindByIdAsync(int id)
+    public async Task<VacancieDto?> FindByIdAsync(int id)
     {
         var vacancie = await _vacancieRepository.FindByIdAsync(id);
         if (vacancie == null)
@@ -66,7 +89,25 @@ public class VacancieService : IVacancieService
         //var result = _mapper.Map<VacancieDto>(vacancie);
         _vacancieRepository.Update(vacancie);
         await _vacancieRepository.SaveAsync();
-        return vacancie;
+        var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+        var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+        VacancieDto result = new()
+        {
+            Id = vacancie.Id,
+            Image = vacancie.Image,
+            Title = vacancie.Title,
+            Address = vacancie.Address,
+            Salary = vacancie.Salary,
+            PublishedOn = vacancie.PublishedOn,
+            ExpireOn = vacancie.ExpireOn,
+            JobDesctiption = vacancie.JobDesctiption,
+            Responsibility = vacancie.Responsibility,
+            IsActive = vacancie.IsActive,
+            Views = vacancie.Views,
+            Category = category?.Name,
+            JobType = jobtype?.Type
+        };
+        return result;
     }
     public async Task<List<VacancieDto>> FindByConditionAsync(Expression<Func<Vacancie, bool>> expression)
     {
@@ -79,7 +120,7 @@ public class VacancieService : IVacancieService
 
 
     //Crud
-    public async Task CreateAsync(VacancieCreateDto vacancie)
+    public async Task CreateAsync(string userId, VacancieCreateDto vacancie)
     {
         if (vacancie is null) throw new ArgumentNullException(nameof(vacancie));
         //var resultCourse = _mapper.Map<Vacancie>(course);
@@ -96,11 +137,12 @@ public class VacancieService : IVacancieService
             Responsibility = vacancie.Responsibility,
             JobTypeId = vacancie.JobTypeId,
             CategoryId = vacancie.CategoryId,
+            UserId = userId,
             Salary = vacancie.Salary,
             IsActive = true,
         };
 
-        var category = await _categoRyepository.FindByIdAsync(vacancie.CategoryId);
+        var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
         category.UsesCount += 1;
         await _vacancieRepository.CreateAsync(result);
         await _vacancieRepository.SaveAsync();
@@ -153,9 +195,9 @@ public class VacancieService : IVacancieService
 
 
     //Filter
-    public async Task<List<Vacancie>> FilterByCategoryAndJobTypeAsync(int categoryId, int jobtypeId)
+    public async Task<List<VacancieDto>> FilterByCategoryAndJobTypeAsync(int categoryId, int jobtypeId)
     {
-        var category = await _categoRyepository.FindByIdAsync(categoryId);
+        var category = await _categoryRepository.FindByIdAsync(categoryId);
         if (category == null) { throw new ArgumentNullException(); }
 
         var jobtype = await _jobTypeRepository.FindByIdAsync(jobtypeId);
@@ -163,57 +205,194 @@ public class VacancieService : IVacancieService
 
 
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id && v.JobTypeId == jobtype.Id).ToListAsync();
-        return vacancies;
+        List<VacancieDto> resultVacancies = new List<VacancieDto>();
+        foreach (var vacancie in vacancies)
+        {
+            var category1 = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+            var jobtype1 = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+            VacancieDto result = new()
+            {
+                Id = vacancie.Id,
+                Image = vacancie.Image,
+                Title = vacancie.Title,
+                Address = vacancie.Address,
+                Salary = vacancie.Salary,
+                PublishedOn = vacancie.PublishedOn,
+                ExpireOn = vacancie.ExpireOn,
+                JobDesctiption = vacancie.JobDesctiption,
+                Responsibility = vacancie.Responsibility,
+                IsActive = vacancie.IsActive,
+                Views = vacancie.Views,
+                Category = category1?.Name,
+                JobType = jobtype1?.Type
+            };
+            resultVacancies.Add(result);
+        }
+        return resultVacancies;
     }
 
-    public async Task<List<Vacancie>?> FilterByDateJobtypeCategoryAsync(int date, int? jobtypeId = null, int? categoryId = null)
+    public async Task<List<VacancieDto>?> FilterByDateJobtypeCategoryAsync(int date, int? jobtypeId = null, int? categoryId = null)
     {
         var resultDate = DateTime.Now.AddDays(-date);
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true
                                                                     && v.PublishedOn >= resultDate
                                                                     && v.JobTypeId == jobtypeId
                                                                     && v.CategoryId == categoryId).ToListAsync();
-        return vacancies;
+        List<VacancieDto> resultVacancies = new List<VacancieDto>();
+        foreach (var vacancie in vacancies)
+        {
+            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+            VacancieDto result = new()
+            {
+                Id = vacancie.Id,
+                Image = vacancie.Image,
+                Title = vacancie.Title,
+                Address = vacancie.Address,
+                Salary = vacancie.Salary,
+                PublishedOn = vacancie.PublishedOn,
+                ExpireOn = vacancie.ExpireOn,
+                JobDesctiption = vacancie.JobDesctiption,
+                Responsibility = vacancie.Responsibility,
+                IsActive = vacancie.IsActive,
+                Views = vacancie.Views,
+                Category = category?.Name,
+                JobType = jobtype?.Type
+            };
+            resultVacancies.Add(result);
+        }
+        return resultVacancies;
     }
 
-    public async Task<List<Vacancie>> FilterByCategoryAsync(int categoryId)
+    public async Task<List<VacancieDto>> FilterByCategoryAsync(int categoryId)
     {
-        var category = await _categoRyepository.FindByIdAsync(categoryId);
+        var category = await _categoryRepository.FindByIdAsync(categoryId);
         if (category == null) { throw new ArgumentNullException(); }
 
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id).ToListAsync();
-        return vacancies;
+        List<VacancieDto> resultVacancies = new List<VacancieDto>();
+        foreach (var vacancie in vacancies)
+        {
+            var category2 = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+            VacancieDto result = new()
+            {
+                Id = vacancie.Id,
+                Image = vacancie.Image,
+                Title = vacancie.Title,
+                Address = vacancie.Address,
+                Salary = vacancie.Salary,
+                PublishedOn = vacancie.PublishedOn,
+                ExpireOn = vacancie.ExpireOn,
+                JobDesctiption = vacancie.JobDesctiption,
+                Responsibility = vacancie.Responsibility,
+                IsActive = vacancie.IsActive,
+                Views = vacancie.Views,
+                Category = category2?.Name,
+                JobType = jobtype?.Type
+            };
+            resultVacancies.Add(result);
+        }
+        return resultVacancies;
     }
 
-    public async Task<List<Vacancie>> FiterByDateAsync(int date)
+    public async Task<List<VacancieDto>> FiterByDateAsync(int date)
     {
         var resultDate = DateTime.Now.AddDays(-date);
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.PublishedOn >= resultDate).ToListAsync();
-        return vacancies;
+        List<VacancieDto> resultVacancies = new List<VacancieDto>();
+        foreach (var vacancie in vacancies)
+        {
+            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+            VacancieDto result = new()
+            {
+                Id = vacancie.Id,
+                Image = vacancie.Image,
+                Title = vacancie.Title,
+                Address = vacancie.Address,
+                Salary = vacancie.Salary,
+                PublishedOn = vacancie.PublishedOn,
+                ExpireOn = vacancie.ExpireOn,
+                JobDesctiption = vacancie.JobDesctiption,
+                Responsibility = vacancie.Responsibility,
+                IsActive = vacancie.IsActive,
+                Views = vacancie.Views,
+                Category = category?.Name,
+                JobType = jobtype?.Type
+            };
+            resultVacancies.Add(result);
+        }
+        return resultVacancies;
     }
 
-    public async Task<List<Vacancie>> FilterByConditionAsync(int categoryId, int jobtypeId, int minSalary, int maxSalary)
+    public async Task<List<VacancieDto>> FilterByConditionAsync(int? categoryId, int? jobtypeId, int? minSalary, int? maxSalary)
     {
         var activeVacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
         if (activeVacancies == null)
         {
             throw new Exception("Heç bir şey tapılmadı");
         }
-        var result = await _vacancieRepository.FindAll().Where(r => r.IsActive == true
+        var vacancies = await _vacancieRepository.FindAll().Where(r => r.IsActive == true
                                                                  && r.CategoryId == categoryId
                                                                  && r.JobTypeId == jobtypeId
                                                                  && r.Salary >= minSalary
                                                                  && r.Salary <= maxSalary).ToListAsync();
-
-        return result;
+        List<VacancieDto> resultVacancies = new List<VacancieDto>();
+        foreach (var vacancie in vacancies)
+        {
+            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+            VacancieDto result = new()
+            {
+                Id = vacancie.Id,
+                Image = vacancie.Image,
+                Title = vacancie.Title,
+                Address = vacancie.Address,
+                Salary = vacancie.Salary,
+                PublishedOn = vacancie.PublishedOn,
+                ExpireOn = vacancie.ExpireOn,
+                JobDesctiption = vacancie.JobDesctiption,
+                Responsibility = vacancie.Responsibility,
+                IsActive = vacancie.IsActive,
+                Views = vacancie.Views,
+                Category = category?.Name,
+                JobType = jobtype?.Type
+            };
+            resultVacancies.Add(result);
+        }
+        return resultVacancies;
     }
 
     //son 15 vacancie
-    public async Task<List<Vacancie>> LastVacanciesAsync()
+    public async Task<List<VacancieDto>> LastVacanciesAsync()
     {
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
         var lastVacancies = await _vacancieRepository.FindAll().Where(v => v.Id >= vacancies.Count - 15).ToListAsync();
-        return vacancies;
+        List<VacancieDto> resultVacancies = new List<VacancieDto>();
+        foreach (var vacancie in vacancies)
+        {
+            var category = await _categoryRepository.FindByIdAsync(vacancie.CategoryId);
+            var jobtype = await _jobTypeRepository.FindByIdAsync(vacancie.JobTypeId);
+            VacancieDto result = new()
+            {
+                Id = vacancie.Id,
+                Image = vacancie.Image,
+                Title = vacancie.Title,
+                Address = vacancie.Address,
+                Salary = vacancie.Salary,
+                PublishedOn = vacancie.PublishedOn,
+                ExpireOn = vacancie.ExpireOn,
+                JobDesctiption = vacancie.JobDesctiption,
+                Responsibility = vacancie.Responsibility,
+                IsActive = vacancie.IsActive,
+                Views = vacancie.Views,
+                Category = category?.Name,
+                JobType = jobtype?.Type
+            };
+            resultVacancies.Add(result);
+        }
+        return resultVacancies;
     }
 
 

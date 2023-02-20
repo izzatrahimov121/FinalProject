@@ -1,9 +1,7 @@
 ﻿using IshTap.Business.DTOs.Education;
 using IshTap.Business.Exceptions;
-using IshTap.Business.Services.Implementations;
 using IshTap.Business.Services.Interfaces;
-using IshTap.Core.Entities;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +9,7 @@ namespace IshTap.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles ="Admin,Member")]
 public class EducationController : ControllerBase
 {
     private readonly IEducationService _educationService;

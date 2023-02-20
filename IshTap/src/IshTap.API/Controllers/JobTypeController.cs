@@ -1,6 +1,8 @@
 ﻿using IshTap.Business.DTOs.JobType;
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
+using IshTap.Core.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +10,7 @@ namespace IshTap.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Member")]
     public class JobTypeController : ControllerBase
     {
         private readonly IJobTypeService _jobTypeService;

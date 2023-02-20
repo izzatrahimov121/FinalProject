@@ -1,6 +1,9 @@
 ﻿using IshTap.Business.DTOs.Vacancie;
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
+using IshTap.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -9,15 +12,18 @@ namespace IshTap.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class VacancieController : Controller
 {
     private readonly IVacancieService _vacancieService;
-    public VacancieController(IVacancieService vacancieService)
+    private readonly UserManager<AppUser> _userManager;
+    public VacancieController(IVacancieService vacancieService, UserManager<AppUser> userManager)
     {
         _vacancieService = vacancieService;
+        _userManager = userManager;
     }
 
-    [HttpGet("")]
+    [HttpGet("All")]
     public async Task<IActionResult> Get()
     {
         try
@@ -32,7 +38,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("{id}")]
+    [HttpGet("GetById")]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -55,7 +61,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("searchByTitle/{title}")]
+    [HttpGet("SearchByTitle")]
     public async Task<IActionResult> GetByName(string title)
     {
         try
@@ -70,7 +76,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpPut("{id}")]
+    [HttpPut("Update")]
     public async Task<IActionResult> Put(int id,VacancieUpdateDto vacancie)
     {
         try
@@ -103,12 +109,13 @@ public class VacancieController : Controller
     }
 
 
-    [HttpPost("")]
+    [HttpPost("Created")]
     public async Task<IActionResult> Post(VacancieCreateDto vacancie)
     {
         try
         {
-            await _vacancieService.CreateAsync(vacancie);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            await _vacancieService.CreateAsync(user.Id,vacancie);
             return StatusCode((int)HttpStatusCode.Created);
         }
         catch (IncorrectFileFormatException ex)
@@ -127,7 +134,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpDelete("{id}")]
+    [HttpDelete("Deleted")]
     public async Task<IActionResult> Delete(int id)
     {
         try
@@ -150,7 +157,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("FilterByCategoryandJobtype/{categoryId},{jobtypeId}")]
+    [HttpGet("FilterByCategoryandJobtype")]
     public async Task<IActionResult> FilterByCategoryAndJobTypeAsync(int categoryId, int jobtypeId)
     {
         try
@@ -164,7 +171,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("FilterByCategory/{categoryId}")]
+    [HttpGet("FilterByCategory")]
     public async Task<IActionResult> FilterByCategoryAsync(int categoryId)
     {
         try
@@ -177,7 +184,7 @@ public class VacancieController : Controller
         }
     }
 
-    [HttpGet("FiterByDate/{date}")]
+    [HttpGet("FiterByDate")]
     public async Task<IActionResult> FiterByDateAsync(int date)
     {
         try
@@ -191,7 +198,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("FilterByDateJobtypeCategory/{date},{categoryId},{jobtypeId}")]
+    [HttpGet("FilterByDateJobtypeCategory")]
     public async Task<IActionResult> FilterByDateJobtypeCategoryAsync(int date = 60, int? categoryId = null, int? jobtypeId = null)
     {
         try
@@ -212,7 +219,7 @@ public class VacancieController : Controller
         return Ok(last);
     }
 
-    [HttpGet("FilterByConditionAsync/{categoryId},{jobtypeId},{minSalary},{maxSalary}")]
+    [HttpGet("FilterByCondition")]
     public async Task<IActionResult> FilterByConditionAsync(int categoryId, int jobtypeId, int minSalary, int maxSalary)
     {
         try

@@ -1,11 +1,11 @@
-﻿using IshTap.Business.DTOs.CV;
+﻿using AutoMapper;
+using IshTap.Business.DTOs.CV;
 using IshTap.Business.Exceptions;
 using IshTap.Business.HelperServices.Interfaces;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
 using IshTap.DataAccess.Repository.Interfaces;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IshTap.Business.Services.Implementations;
@@ -14,18 +14,30 @@ public class CVService : ICVService
 {
     private readonly ICVRepository _cvRepository;
     private readonly IFileService _fileService;
+    private readonly IEducationRepository _educationRepository;
+    private readonly IExperiencesRepository _experiencesRepository;
     private readonly IHostingEnvironment _env;
     private readonly ICategoryRepository _categoryRepository;
+    private readonly IMapper _mapper;
 
-    public CVService(ICVRepository cvRepository, IFileService fileService, IHostingEnvironment env, ICategoryRepository categoryRepository)
+    public CVService(ICVRepository cvRepository
+                   , IFileService fileService
+                   , IHostingEnvironment env
+                   , ICategoryRepository categoryRepository
+                   , IMapper mapper
+                   , IEducationRepository educationRepository
+                   , IExperiencesRepository experiencesRepository)
     {
         _cvRepository = cvRepository;
         _fileService = fileService;
         _env = env;
         _categoryRepository = categoryRepository;
+        _mapper = mapper;
+        _educationRepository = educationRepository;
+        _experiencesRepository = experiencesRepository;
     }
 
-    public async Task CreateAsync(CVCreatedDto cv)
+    public async Task CreateAsync(string userId, CVCreatedDto cv)
     {
         if (cv is null) throw new ArgumentNullException(nameof(cv));
 
@@ -52,6 +64,7 @@ public class CVService : ICVService
             CategoryId = cv.CategoryId,
             EducationId = cv.EducationId,
             ExperienceId = cv.ExperienceId,
+            UserId = userId,
             PublishedOn = DateTime.Now,
             ExpireOn = DateTime.Now.AddDays(30),
         };
@@ -104,21 +117,52 @@ public class CVService : ICVService
         _cvRepository.Delete(cv);
         await _cvRepository.SaveAsync();
     }
-    public async Task<List<CVs>> FindAllAsync()
+    public async Task<List<CVDto>> FindAllAsync()
     {
         var cvs = await _cvRepository.FindAll().ToListAsync();
+        //foreach (var cv in cvs)
+        //{
+        //    if (cv.IsActive == true && DateTime.Now >= cv.ExpireOn)
+        //    {
+        //        cv.IsActive = false;
+        //        _cvRepository.Update(cv);
+        //    }
+        //}
+        
+        List<CVDto> resultCV = new List<CVDto>();
         foreach (var cv in cvs)
         {
-            if (cv.IsActive == true && DateTime.Now >= cv.ExpireOn)
+            var categry = await _categoryRepository.FindByIdAsync(cv.CategoryId);
+            var edu = await _educationRepository.FindByIdAsync(cv.EducationId);
+            var exp = await _experiencesRepository.FindByIdAsync(cv.ExperienceId);
+            CVDto result = new()
             {
-                cv.IsActive = false;
-                _cvRepository.Update(cv);
-            }
+                Name = cv.Name,
+                Surname = cv.Surname,
+                FatherName = cv.FatherName,
+                Iamge = cv.Iamge,
+                AboutYourself = cv.AboutYourself,
+                Position = cv.Position,
+                City = cv.City,
+                MinSalary = cv.MinSalary,
+                Skills = cv.Skills,
+                Details = cv.Details,
+                Email = cv.Email,
+                Phone = cv.Phone,
+                PublishedOn = cv.PublishedOn,
+                ExpireOn = cv.ExpireOn,
+                Views = cv.Views,
+                IsActive = cv.IsActive,
+                Education = edu?.Type,
+                Category = categry?.Name,
+                Experience = exp?.Type
+            };
+            resultCV.Add(result);
         }
-        return cvs;
+        return resultCV;
     }
 
-    public async Task<CVs?> FindByIdAsync(int id)
+    public async Task<CVDto?> FindByIdAsync(int id)
     {
         var cv = await _cvRepository.FindByIdAsync(id);
         if (cv == null)
@@ -128,13 +172,67 @@ public class CVService : ICVService
         cv.Views += 1;
         _cvRepository.Update(cv);
         await _cvRepository.SaveAsync();
-        return cv;
+        var categry = await _categoryRepository.FindByIdAsync(cv.CategoryId);
+        var edu = await _educationRepository.FindByIdAsync(cv.EducationId);
+        var exp = await _experiencesRepository.FindByIdAsync(cv.ExperienceId);
+        CVDto result = new()
+        {
+            Name = cv.Name,
+            Surname = cv.Surname,
+            FatherName = cv.FatherName,
+            Iamge = cv.Iamge,
+            AboutYourself = cv.AboutYourself,
+            Position = cv.Position,
+            City = cv.City,
+            MinSalary = cv.MinSalary,
+            Skills = cv.Skills,
+            Details = cv.Details,
+            Email = cv.Email,
+            Phone = cv.Phone,
+            PublishedOn = cv.PublishedOn,
+            ExpireOn = cv.ExpireOn,
+            Views = cv.Views,
+            IsActive = cv.IsActive,
+            Education = edu?.Type,
+            Category = categry?.Name,
+            Experience = exp?.Type
+        };
+        return result;
     }
-
-    public async Task<List<CVs>> LastVacanciesAsync()
+    public async Task<List<CVDto>> LastVacanciesAsync()
     {
         var cvs = await _cvRepository.FindAll().Where(c => c.IsActive == true).ToListAsync();
         var lastCv = await _cvRepository.FindAll().Where(c => c.Id >= cvs.Count - 15).ToListAsync();
-        return lastCv;
+        List<CVDto> resultCV = new List<CVDto>();
+        foreach (var cv in cvs)
+        {
+            var categry = await _categoryRepository.FindByIdAsync(cv.CategoryId);
+            var edu = await _educationRepository.FindByIdAsync(cv.EducationId);
+            var exp = await _experiencesRepository.FindByIdAsync(cv.ExperienceId);
+            CVDto result = new()
+            {
+                Name = cv.Name,
+                Surname = cv.Surname,
+                FatherName = cv.FatherName,
+                Iamge = cv.Iamge,
+                AboutYourself = cv.AboutYourself,
+                Position = cv.Position,
+                City = cv.City,
+                MinSalary = cv.MinSalary,
+                Skills = cv.Skills,
+                Details = cv.Details,
+                Email = cv.Email,
+                Phone = cv.Phone,
+                PublishedOn = cv.PublishedOn,
+                ExpireOn = cv.ExpireOn,
+                Views = cv.Views,
+                IsActive = cv.IsActive,
+                Education = edu?.Type,
+                Category = categry?.Name,
+                Experience = exp?.Type
+            };
+            resultCV.Add(result);
+        }
+        return resultCV;
     }
 }

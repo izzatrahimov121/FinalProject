@@ -85,34 +85,16 @@ public class AccountsController : ControllerBase
         }
     }
 
-    [HttpGet("Logout")]
-    public async Task<IActionResult> Logout()
-    {
-        try
-        {
-            await _signInManager.SignOutAsync();
-            return Ok("User successfully logout");
-        }
-        catch (LogoutFailException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (Exception)
-        {
-            return StatusCode((int)HttpStatusCode.InternalServerError);
-        }
-    }
-
-    [HttpPost("ForgotPassword")]
+    [HttpPost("forgotpassword")]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPassword)
     {
         try
         {
-            var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
-            if (user == null) { throw new NotFoundException("User not found"); }
-            var token = _userManager.GeneratePasswordResetTokenAsync(user);
-            var link = Url.Action("ResetPassword", "Accounts", new { token, email = user.Email }, Request.Scheme);
-            await _authService.ForgotPasswordAsync(forgotPassword ,link);
+            //var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
+            //if (user == null) { throw new NotFoundException("User not found"); }
+            //var token = _userManager.GeneratePasswordResetTokenAsync(user);
+            //var link = Url.Action("ResetPassword", "Accounts", new { token, email = user.Email }, Request.Scheme);
+            await _authService.ForgotPasswordAsync(forgotPassword);
             return Ok("Link sent. Please check your email");
         }
         catch (Exception)
@@ -121,16 +103,10 @@ public class AccountsController : ControllerBase
         }
     }
 
-    [HttpPost("ResetPassword")]
-
-    public async Task<IActionResult> ResetPassword()
+    [HttpPost("resetpassword")]
+    public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordDto resetPassword, string email, string token)
     {
-        ResetPasswordDto resetPassword = new()
-        {
-            NewPassword = "Test@123",
-            ConfirmNewPassword = "Test@123"
-        };
-        await _authService.ResetPasswordAsync(resetPassword);
+        await _authService.ResetPasswordAsync(email,token,resetPassword);
         return Ok("Tamam");
     }
 }

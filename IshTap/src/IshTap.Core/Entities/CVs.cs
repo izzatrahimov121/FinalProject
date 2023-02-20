@@ -54,25 +54,30 @@ public class CVs:IEntity
     [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(20)]
     public string? Phone { get; set; }
 
-
     public DateTime? PublishedOn { get; set; }
     public DateTime? ExpireOn { get; set; }
     public int? Views { get; set; } = 0;
     public bool? IsActive { get; set; } = true;
 
 
+
     [Required(ErrorMessage = "Boş buraxmayın")]
-    public int? EducationId { get; set; }
+    public int EducationId { get; set; }
     public Educations? Education { get; set; }
 
 
+    [Required]
+    public string UserId { get; set; }
+    public AppUser? User { get; set; }
+
+
     [Required(ErrorMessage = "Boş buraxmayın")]
-    public int? CategoryId { get; set; }
+    public int CategoryId { get; set; }
     public Category? Category { get; set; }
 
 
     [Required(ErrorMessage = "Boş buraxmayın")]
-    public int? ExperienceId { get; set; }
+    public int ExperienceId { get; set; }
     public Experiences? Experience { get; set; }
 
 }

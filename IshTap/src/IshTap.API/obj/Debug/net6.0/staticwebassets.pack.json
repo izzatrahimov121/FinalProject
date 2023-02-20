@@ -1,8 +1,16 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\CVs\\627cc1b3-ac90-48c7-aafe-8856b1d70521indir1.png",
-      "PackagePath": "staticwebassets\\assets\\img\\CVs\\627cc1b3-ac90-48c7-aafe-8856b1d70521indir1.png"
+      "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\CVs\\98599f8a-c0e4-419d-b5dd-1575005baba0TEst.png",
+      "PackagePath": "staticwebassets\\assets\\img\\CVs\\98599f8a-c0e4-419d-b5dd-1575005baba0TEst.png"
+    },
+    {
+      "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\CVs\\ce578b7c-4927-4c4f-9c09-1ad1f517cd1einduuuuuir.png",
+      "PackagePath": "staticwebassets\\assets\\img\\CVs\\ce578b7c-4927-4c4f-9c09-1ad1f517cd1einduuuuuir.png"
+    },
+    {
+      "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\user\\b14d80b0-4ba3-4a0a-a21c-61bd274edf64indir.jpg",
+      "PackagePath": "staticwebassets\\assets\\img\\user\\b14d80b0-4ba3-4a0a-a21c-61bd274edf64indir.jpg"
     },
     {
       "Id": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\99bfef28-fbf7-452c-bfde-7e81f79f8b5findir.jpg",

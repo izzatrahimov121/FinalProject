@@ -45,8 +45,8 @@ namespace IshTap.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -125,8 +125,7 @@ namespace IshTap.DataAccess.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("CategoryId")
-                        .IsRequired()
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("City")
@@ -138,8 +137,7 @@ namespace IshTap.DataAccess.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("EducationId")
-                        .IsRequired()
+                    b.Property<int>("EducationId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -147,8 +145,7 @@ namespace IshTap.DataAccess.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("ExperienceId")
-                        .IsRequired()
+                    b.Property<int>("ExperienceId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ExpireOn")
@@ -196,6 +193,10 @@ namespace IshTap.DataAccess.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("Views")
                         .HasColumnType("int");
 
@@ -206,6 +207,8 @@ namespace IshTap.DataAccess.Migrations
                     b.HasIndex("EducationId");
 
                     b.HasIndex("ExperienceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CVs");
                 });
@@ -276,6 +279,9 @@ namespace IshTap.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -313,10 +319,16 @@ namespace IshTap.DataAccess.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Views")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -478,15 +490,27 @@ namespace IshTap.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("IshTap.Core.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
 
                     b.Navigation("Education");
 
                     b.Navigation("Experience");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IshTap.Core.Entities.Vacancie", b =>
                 {
+                    b.HasOne("IshTap.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("IshTap.Core.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -498,6 +522,8 @@ namespace IshTap.DataAccess.Migrations
                         .HasForeignKey("JobTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
 
                     b.Navigation("Category");
 

@@ -38,9 +38,15 @@ public class Vacancie : IEntity
 
     public bool? IsActive { get; set; }
 
+    [Required]
+    public string? UserId { get; set; }
+    public AppUser? AppUser { get; set; }
+
+    [Required]
     public int CategoryId { get; set; }
     public Category? Category { get; set; }
 
+    [Required]
     public int JobTypeId { get; set; }
     public JobType? JobType { get; set; }
 }

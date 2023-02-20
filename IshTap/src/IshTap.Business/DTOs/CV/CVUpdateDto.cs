@@ -6,7 +6,6 @@ namespace IshTap.Business.DTOs.CV;
 
 public class CVUpdateDto
 {
-    public int Id { get; set; }
 
     [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(50)]
     public string? Name { get; set; }
@@ -53,15 +52,15 @@ public class CVUpdateDto
 
 
     [Required(ErrorMessage = "Boş buraxmayın")]
-    public int? EducationId { get; set; }
+    public int EducationId { get; set; }
 
 
     [Required(ErrorMessage = "Boş buraxmayın")]
-    public int? CategoryId { get; set; }
+    public int CategoryId { get; set; }
 
 
     [Required(ErrorMessage = "Boş buraxmayın")]
-    public int? ExperienceId { get; set; }
+    public int ExperienceId { get; set; }
 
 
 }

@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 		<Folder Include="wwwroot\assets\img\CVs\" />
+		<Folder Include="wwwroot\assets\img\user\" />
 		<Folder Include="wwwroot\assets\img\vacancies\" />
 	</ItemGroup>
 

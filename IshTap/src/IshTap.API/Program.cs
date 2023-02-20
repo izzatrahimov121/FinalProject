@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using T = IshTap.Business.HelperServices.Implementations;
 #endregion
@@ -24,9 +25,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(VacancieMapper).Assembly);
+builder.Services.AddAutoMapper(typeof(CvMapper).Assembly);
 
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
 builder.Services.AddDbContext<AppDbContexts>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
@@ -87,6 +90,7 @@ builder.Services.AddScoped<IJobTypeRepository, JobTypeRepository>();
 builder.Services.AddScoped<IExperiencesRepository, ExperiencesRepository>();
 
 //add service
+builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IVacancieService, VacancieService>();
 builder.Services.AddScoped<ICVService, CVService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -110,7 +114,33 @@ builder.Services.AddScoped<AppDbContextInitializer>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setup =>
+{
+    // Include 'SecurityScheme' to use JWT Authentication
+    var jwtSecurityScheme = new OpenApiSecurityScheme
+    {
+        BearerFormat = "JWT",
+        Name = "JWT Authentication",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
 
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+
+    setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { jwtSecurityScheme, Array.Empty<string>() }
+    });
+
+});
 
 
 var app = builder.Build();
@@ -126,6 +156,10 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var initializer = scope.ServiceProvider.GetRequiredService<AppDbContextInitializer>();
+    await initializer.EducationSeedAsync();
+    await initializer.CategorySeedAsync();
+    await initializer.JobTypeSeedAsync();
+    await initializer.ExperiencesSeedAsync();
     await initializer.InitializeAsync();
     await initializer.RoleSeedAsync();
     await initializer.UserSeedAsync();

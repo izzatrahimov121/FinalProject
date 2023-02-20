@@ -1,143 +1,145 @@
 ﻿using IshTap.Business.DTOs.CV;
-using IshTap.Business.DTOs.Vacancie;
 using IshTap.Business.Exceptions;
-using IshTap.Business.Services.Implementations;
 using IshTap.Business.Services.Interfaces;
+using IshTap.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace IshTap.API.Controllers
+namespace IshTap.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class CVController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CVController : ControllerBase
+    private readonly ICVService _cvService;
+    private readonly UserManager<AppUser> _userManager;
+
+    public CVController(ICVService cvService, UserManager<AppUser> userManager)
     {
-        private readonly ICVService _cvService;
+        _cvService = cvService;
+        _userManager = userManager;
+    }
 
-        public CVController(ICVService cvService)
+
+    [HttpGet("AllCv")]
+    public async Task<IActionResult> Get()
+    {
+        try
         {
-            _cvService = cvService;
+            var cvs = await _cvService.FindAllAsync();
+            return Ok(cvs);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpGet("GetById/{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        try
+        {
+            var cv = await _cvService.FindByIdAsync(id);
+            return Ok(cv);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (FormatException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    [HttpPut("Update/{id}")]
+    public async Task<IActionResult> Put(int id,CVUpdateDto cv)
+    {
+        try
+        {
+            await _cvService.UpdateAsync(id, cv);
+            return StatusCode((int)HttpStatusCode.OK);
+        }
+        catch (IncorrectFileFormatException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (IncorrectFileSizeException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (BadRequestException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
         }
 
+    }
 
-        [HttpGet("")]
-        public async Task<IActionResult> Get()
+    [HttpPost("Created")]
+    public async Task<IActionResult> Post([FromForm]CVCreatedDto cv)
+    {
+        try
         {
-            try
-            {
-                var cvs = await _cvService.FindAllAsync();
-                return Ok(cvs);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            await _cvService.CreateAsync(user.Id ,cv);
+            return StatusCode((int)HttpStatusCode.Created);
         }
-
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        catch (IncorrectFileFormatException ex)
         {
-            try
-            {
-                var cv = await _cvService.FindByIdAsync(id);
-                return Ok(cv);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            return BadRequest(ex.Message);
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromForm] CVUpdateDto cv)
+        catch (IncorrectFileSizeException ex)
         {
-            try
-            {
-                await _cvService.UpdateAsync(id, cv);
-                return StatusCode((int)HttpStatusCode.OK);
-            }
-            catch (IncorrectFileFormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (IncorrectFileSizeException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (BadRequestException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-
+            return BadRequest(ex.Message);
         }
-
-        [HttpPost("")]
-        public async Task<IActionResult> Post([FromForm] CVCreatedDto cv)
+        catch (Exception)
         {
-            try
-            {
-                await _cvService.CreateAsync(cv);
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (IncorrectFileFormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (IncorrectFileSizeException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-
+            return StatusCode((int)HttpStatusCode.InternalServerError);
         }
+    }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+    [HttpDelete("Deleted/{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
         {
-            try
-            {
-                await _cvService.Delete(id);
-                return Ok("Deleted");
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            await _cvService.Delete(id);
+            return Ok("Deleted");
         }
-
-        [HttpGet("LastVacancies")]
-        public async Task<IActionResult> LastVacancies()
+        catch (NotFoundException ex)
         {
-            var last = await _cvService.LastVacanciesAsync();
-            return Ok(last);
+            return NotFound(ex.Message);
         }
+        catch (FormatException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    [HttpGet("LastVacancies")]
+    public async Task<IActionResult> LastVacancies()
+    {
+        var last = await _cvService.LastVacanciesAsync();
+        return Ok(last);
     }
 }
