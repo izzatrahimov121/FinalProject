@@ -48,10 +48,9 @@ public class UserProfileService : IUserProfileService
         _contexts = contexts;
     }
     private DbSet<AppUser> _table => _contexts.Set<AppUser>();
-
     public async Task ChenceImageAsync(string userId,UserImageDto ImageDto)
     {
-        var user = await _userManager.FindByNameAsync(userId);
+        var user = await _userManager.FindByIdAsync(userId);
         string fileName = await _fileService.CopyFileAsync(ImageDto.Image, _env.WebRootPath, "assets", "img", "user");
         user.Image = fileName;
         _table.Update(user);
@@ -86,7 +85,6 @@ public class UserProfileService : IUserProfileService
         }
         return resultVacancies;
     }
-
     public async Task<List<CVDto>> UserCVsAsync(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);

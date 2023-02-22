@@ -43,7 +43,7 @@ public class AuthService : IAuthService
         {
             ToEmail = email,
             Subject = "Şifre Sıfırlama",
-            Body = $"<strong>Şifrenizi sıfırlamak için {url} <a href='{url}'>buraya tıklayın</a></strong><br>" +
+            Body = $"<strong>Şifrenizi sıfırlamak için <a href='{url}'>buraya tıklayın</a></strong><br>" +
                 $"Copyright ©2023 İş Tap | All rights reserved.",
         };
         await _mailService.SendEmailAsync(mailRequest);

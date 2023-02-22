@@ -21,4 +21,7 @@ public class AppDbContexts : IdentityDbContext<AppUser>
     public DbSet<CVs> CVs { get; set; }
     public DbSet<Educations> Educations { get; set; }
     public DbSet<Experiences> Experiences { get; set; }
+
+    //Contacts
+    public DbSet<GetInTouch> GetInTouch { get; set; }
 }

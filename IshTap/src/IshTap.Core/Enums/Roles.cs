@@ -2,7 +2,7 @@
 
 public enum Roles
 {
-    Admin,
+    Admin=1,
     Member,
     BasicUser
 }

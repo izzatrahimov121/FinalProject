@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IshTap.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContexts))]
-    [Migration("20230220134948_Initial")]
+    [Migration("20230221150842_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,7 @@ namespace IshTap.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -107,7 +108,7 @@ namespace IshTap.DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsesCount")
+                    b.Property<int>("UsesCount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

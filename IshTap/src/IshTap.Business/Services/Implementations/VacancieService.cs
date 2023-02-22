@@ -147,7 +147,6 @@ public class VacancieService : IVacancieService
         await _vacancieRepository.CreateAsync(result);
         await _vacancieRepository.SaveAsync();
     }
-
     public async Task Delete(int id)
     {
         var baseCourse = await _vacancieRepository.FindByIdAsync(id);
@@ -160,7 +159,6 @@ public class VacancieService : IVacancieService
         _vacancieRepository.Delete(baseCourse);
         await _vacancieRepository.SaveAsync();
     }
-
     public async Task UpdateAsync(int id, VacancieUpdateDto vacancie)
     {
         var baseVacancie = await _vacancieRepository.FindByIdAsync(id);
@@ -188,8 +186,6 @@ public class VacancieService : IVacancieService
         _vacancieRepository.Update(baseVacancie);
         await _vacancieRepository.SaveAsync();
     }
-
-
 
 
 

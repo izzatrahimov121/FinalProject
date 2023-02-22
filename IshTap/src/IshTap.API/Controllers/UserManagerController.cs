@@ -124,13 +124,17 @@ namespace IshTap.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch(RemoveUserRoleException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
 
-        [HttpDelete("DeletedUser")]
+        [HttpDelete("DeletedUser/{id}")]
         public async Task<IActionResult> Deleted(string id)
         {
             try

@@ -88,6 +88,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IEducationRepository, EducationRepository>();
 builder.Services.AddScoped<IJobTypeRepository, JobTypeRepository>();
 builder.Services.AddScoped<IExperiencesRepository, ExperiencesRepository>();
+builder.Services.AddScoped<IGetInTouchRepository, GetInTouchRepository>();
 
 //add service
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
@@ -95,6 +96,7 @@ builder.Services.AddScoped<IVacancieService, VacancieService>();
 builder.Services.AddScoped<ICVService, CVService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserManagerService, UserManagerService>();
+builder.Services.AddScoped<IGetInTouchService, GetInTouchService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IJobTypeService, JobTypeService>();

@@ -21,18 +21,23 @@ public class UserManagerService : IUserManagerService
         _contexts = contexts;
         _userManager = userManager;
     }
+
+
     public async Task<List<AppUserDto>> FindAllAsync()
     {
         var users = await _table.AsQueryable().AsNoTracking().ToListAsync();
         List<AppUserDto> userDto = new List<AppUserDto>();
         foreach (var user in users)
         {
+            var roles = await _userManager.GetRolesAsync(user);
             AppUserDto appuser = new()
             {
                 Id = user.Id,
                 Fullname = user.Fullname,
+                Image = user.Image,
                 Username = user.UserName,
                 Email = user.Email,
+                Roles = roles.ToList(),
             };
             userDto.Add(appuser);
         }
@@ -42,12 +47,15 @@ public class UserManagerService : IUserManagerService
     {
         var baseUser = await _table.FindAsync(id);
         if (baseUser is null) throw new ArgumentNullException("User is not");
+        var roles = await _userManager.GetRolesAsync(baseUser);
         AppUserDto appuser = new()
         {
             Id = baseUser.Id,
             Fullname = baseUser.Fullname,
+            Image = baseUser.Image,
             Username = baseUser.UserName,
             Email = baseUser.Email,
+            Roles = roles.ToList(),
         };
         return appuser;
     }
@@ -106,6 +114,11 @@ public class UserManagerService : IUserManagerService
     {
         var user = await _table.FindAsync(id);
         if (user is null) throw new ArgumentNullException("User is not");
+        var roles = await _userManager.GetRolesAsync(user);
+        if (roles.ToList().Count <= 1)
+        {
+            throw new RemoveUserRoleException("User has only 1 role. Try changing role");
+        }
         await _userManager.RemoveFromRoleAsync(user, role.ToString());
         await _contexts.SaveChangesAsync();
     }
