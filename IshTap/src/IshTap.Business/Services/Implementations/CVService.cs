@@ -119,7 +119,7 @@ public class CVService : ICVService
     }
     public async Task<List<CVDto>> FindAllAsync()
     {
-        var cvs = await _cvRepository.FindAll().ToListAsync();
+        var cvs = await _cvRepository.FindAll().Where(c=>c.IsActive==true).ToListAsync();
         //foreach (var cv in cvs)
         //{
         //    if (cv.IsActive == true && DateTime.Now >= cv.ExpireOn)
@@ -128,7 +128,6 @@ public class CVService : ICVService
         //        _cvRepository.Update(cv);
         //    }
         //}
-        
         List<CVDto> resultCV = new List<CVDto>();
         foreach (var cv in cvs)
         {
@@ -161,7 +160,6 @@ public class CVService : ICVService
         }
         return resultCV;
     }
-
     public async Task<CVDto?> FindByIdAsync(int id)
     {
         var cv = await _cvRepository.FindByIdAsync(id);

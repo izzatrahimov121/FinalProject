@@ -18,7 +18,9 @@ public class VacancieDto
     public DateTime? ExpireOn { get; set; }
 
     public string? JobDesctiption { get; set; }
-    
+    public string? ContactPhone { get; set; }
+    public string? ContactEmail { get; set; }
+
     public string? Responsibility { get; set; }
 
     public bool? IsActive { get; set; }

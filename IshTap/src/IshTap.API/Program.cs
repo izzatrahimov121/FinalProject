@@ -99,6 +99,8 @@ builder.Services.AddScoped<IUserManagerService, UserManagerService>();
 builder.Services.AddScoped<IGetInTouchService, GetInTouchService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IApplyJobService, ApplyJobService>();
+builder.Services.AddScoped<IFavoriteVacancieServices, FavoriteVacancieServices>();
 builder.Services.AddScoped<IJobTypeService, JobTypeService>();
 builder.Services.AddScoped<IExperienceService, ExperienceService>();
 builder.Services.AddScoped<IEducationService, EducationService>();

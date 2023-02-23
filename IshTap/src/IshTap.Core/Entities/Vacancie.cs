@@ -17,6 +17,13 @@ public class Vacancie : IEntity
     public string? Address { get; set; }
 
 
+    [Required(ErrorMessage = "Boş buraxmayın")]
+    public string? ContactPhone { get; set; }
+
+
+    [Required(ErrorMessage = "Boş buraxmayın"),DataType(DataType.EmailAddress)]
+    public string? ContactEmail { get; set; }
+
 
     [Required(ErrorMessage = "Boş buraxmayın")]
     public int? Salary { get; set; }

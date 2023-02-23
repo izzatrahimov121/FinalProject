@@ -27,6 +27,13 @@ public class VacancieUpdateDto
     [Required(ErrorMessage = "Boş buraxmayın"), MaxLength(700, ErrorMessage = "Uzunluq 700 simvolu keçdi")]
     public string? Responsibility { get; set; }
 
+    [Required(ErrorMessage = "Boş buraxmayın")]
+    public string? ContactPhone { get; set; }
+
+
+    [Required(ErrorMessage = "Boş buraxmayın"), DataType(DataType.EmailAddress)]
+    public string? ContactEmail { get; set; }
+
 
     [Required(ErrorMessage ="Boş buraxmayın")]
     public int CategoryId { get; set; }

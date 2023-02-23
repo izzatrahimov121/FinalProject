@@ -6,5 +6,5 @@ public class FavoriteVacancies : IEntity
 {
     public int Id { get; set; }
     public string UserId { get; set; }
-    public string VacancieId { get; set; }
+    public int VacancieId { get; set; }
 }

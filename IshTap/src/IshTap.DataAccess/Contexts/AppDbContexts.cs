@@ -24,4 +24,9 @@ public class AppDbContexts : IdentityDbContext<AppUser>
 
     //Contacts
     public DbSet<GetInTouch> GetInTouch { get; set; }
+
+    //fovarites
+    public DbSet<FavoriteVacancies> FavoriteVacancies { get; set; }
+
+    public DbSet<ApplyJob> ApplyJob { get; set; }
 }

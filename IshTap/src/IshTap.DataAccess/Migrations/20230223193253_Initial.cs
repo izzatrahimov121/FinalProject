@@ -10,6 +10,23 @@ namespace IshTap.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ApplyJob",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Website = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Coverletter = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplyJob", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -88,6 +105,20 @@ namespace IshTap.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Experiences", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FavoriteVacancies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VacancieId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteVacancies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -210,6 +241,29 @@ namespace IshTap.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GetInTouch",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Subject = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GetInTouch", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GetInTouch_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CVs",
                 columns: table => new
                 {
@@ -274,6 +328,8 @@ namespace IshTap.DataAccess.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Salary = table.Column<int>(type: "int", nullable: false),
                     PublishedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpireOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -368,6 +424,11 @@ namespace IshTap.DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GetInTouch_AppUserId",
+                table: "GetInTouch",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vacancies_AppUserId",
                 table: "Vacancies",
                 column: "AppUserId");
@@ -386,6 +447,9 @@ namespace IshTap.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ApplyJob");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -402,6 +466,12 @@ namespace IshTap.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "CVs");
+
+            migrationBuilder.DropTable(
+                name: "FavoriteVacancies");
+
+            migrationBuilder.DropTable(
+                name: "GetInTouch");
 
             migrationBuilder.DropTable(
                 name: "Vacancies");

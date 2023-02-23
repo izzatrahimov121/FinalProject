@@ -8,7 +8,7 @@ public interface IVacancieService
 {
     Task<List<VacancieDto>> FindAllAsync();
     Task<List<VacancieDto>> FindByConditionAsync(Expression<Func<Vacancie, bool>> expression);
-    Task<List<VacancieDto>> FilterByCategoryAndJobTypeAsync(int categoryId, int jobtypeId);
+    Task<List<VacancieDto>> FilterByCategoryAndJobTypeAsync(int? categoryId, int? jobtypeId);
     Task<List<VacancieDto>?> FilterByDateJobtypeCategoryAsync(int date = 60, int? jobtypeId = null, int? categoryId = null);
     Task<List<VacancieDto>> FilterByCategoryAsync(int categoryId);
     Task<List<VacancieDto>> FiterByDateAsync(int date);

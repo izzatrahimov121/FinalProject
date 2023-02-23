@@ -16,12 +16,14 @@ public class UserProfileController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserProfileService _userProfileService;
-
+    private readonly IFavoriteVacancieServices _favoriteVacancieServices;
     public UserProfileController(UserManager<AppUser> userManager,
-                                 IUserProfileService userProfileService)
+                                 IUserProfileService userProfileService,
+                                 IFavoriteVacancieServices favoriteVacancieServices)
     {
         _userManager = userManager;
         _userProfileService = userProfileService;
+        _favoriteVacancieServices = favoriteVacancieServices;
     }
 
     [HttpGet("Profile")]
@@ -81,6 +83,26 @@ public class UserProfileController : ControllerBase
             return Ok(resultVacancies);
         }
         catch (NotFoundException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    [HttpGet("fovarite")]
+    public async Task<IActionResult> Favorites()
+    {
+        try
+        {
+            var user = await _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+            if (user is null) { throw new NotFoundException("User not found"); }
+            var result = await _favoriteVacancieServices.Favorites(user.Id);
+            return Ok(result);
+        }
+        catch(NotFoundException ex)
         {
             return BadRequest(ex.Message);
         }

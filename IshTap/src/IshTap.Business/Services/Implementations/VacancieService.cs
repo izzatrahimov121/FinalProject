@@ -66,7 +66,9 @@ public class VacancieService : IVacancieService
                 Address = vacancie.Address,
                 Salary = vacancie.Salary,
                 PublishedOn = vacancie.PublishedOn,
-                ExpireOn= vacancie.ExpireOn,
+                ExpireOn = vacancie.ExpireOn,
+                ContactEmail = vacancie.ContactEmail,
+                ContactPhone = vacancie.ContactPhone,
                 JobDesctiption = vacancie.JobDesctiption,
                 Responsibility = vacancie.Responsibility,
                 IsActive = vacancie.IsActive,
@@ -100,6 +102,8 @@ public class VacancieService : IVacancieService
             Salary = vacancie.Salary,
             PublishedOn = vacancie.PublishedOn,
             ExpireOn = vacancie.ExpireOn,
+            ContactEmail = vacancie.ContactEmail,
+            ContactPhone = vacancie.ContactPhone,
             JobDesctiption = vacancie.JobDesctiption,
             Responsibility = vacancie.Responsibility,
             IsActive = vacancie.IsActive,
@@ -138,6 +142,8 @@ public class VacancieService : IVacancieService
             JobTypeId = vacancie.JobTypeId,
             CategoryId = vacancie.CategoryId,
             UserId = userId,
+            ContactPhone = vacancie.ContactPhone,
+            ContactEmail = vacancie.ContactEmail,
             Salary = vacancie.Salary,
             IsActive = true,
         };
@@ -178,6 +184,8 @@ public class VacancieService : IVacancieService
         baseVacancie.JobDesctiption = vacancie.JobDesctiption;
         baseVacancie.Image = fileName;
         baseVacancie.Address = vacancie.Address;
+        baseVacancie.ContactEmail = vacancie.ContactEmail;
+        baseVacancie.ContactPhone = vacancie.ContactPhone;
         baseVacancie.Responsibility = vacancie.Responsibility;
         baseVacancie.JobTypeId = vacancie.JobTypeId;
         baseVacancie.CategoryId = vacancie.CategoryId;
@@ -191,16 +199,26 @@ public class VacancieService : IVacancieService
 
 
     //Filter
-    public async Task<List<VacancieDto>> FilterByCategoryAndJobTypeAsync(int categoryId, int jobtypeId)
+    public async Task<List<VacancieDto>> FilterByCategoryAndJobTypeAsync(int? categoryId, int? jobtypeId)
     {
-        var category = await _categoryRepository.FindByIdAsync(categoryId);
-        if (category == null) { throw new ArgumentNullException(); }
+        Category category = new Category();
+        JobType jobtype = new JobType();
+        List<Vacancie> vacancies = new List<Vacancie>();
+        vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
+        if (categoryId != null)
+        {
+            category = await _categoryRepository.FindByIdAsync((int)categoryId);
+            if (category == null) { throw new ArgumentNullException(); }
+            vacancies = await _vacancieRepository.FindAll().Where(v => v.CategoryId == category.Id).ToListAsync();
+        }
 
-        var jobtype = await _jobTypeRepository.FindByIdAsync(jobtypeId);
-        if (jobtype == null) { throw new ArgumentNullException(); }
+        if (jobtypeId != null)
+        {
+            jobtype = await _jobTypeRepository.FindByIdAsync((int)jobtypeId);
+            if (jobtype == null) { throw new ArgumentNullException(); }
+            vacancies = await _vacancieRepository.FindAll().Where(v => v.JobTypeId == jobtype.Id).ToListAsync();
+        }
 
-
-        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id && v.JobTypeId == jobtype.Id).ToListAsync();
         var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
@@ -236,16 +254,16 @@ public class VacancieService : IVacancieService
 
     public async Task<List<VacancieDto>> FilterByConditionAsync(int? categoryId, int? jobtypeId, int? minSalary, int? maxSalary)
     {
-        var activeVacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
-        if (activeVacancies == null)
+
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
+        if (vacancies == null)
         {
             throw new Exception("Heç bir şey tapılmadı");
         }
-        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
         if (categoryId != null) { vacancies = vacancies.Where(v => v.CategoryId == categoryId).ToList(); }
-        if (jobtypeId != null)  { vacancies = vacancies.Where(v => v.JobTypeId == jobtypeId).ToList(); }
-        if (minSalary != null)  { vacancies = vacancies.Where(v => v.Salary >= minSalary).ToList(); }
-        if (maxSalary != null)  { vacancies = vacancies.Where(v => v.Salary <= maxSalary).ToList(); }
+        if (jobtypeId != null) { vacancies = vacancies.Where(v => v.JobTypeId == jobtypeId).ToList(); }
+        if (minSalary != null) { vacancies = vacancies.Where(v => v.Salary >= minSalary).ToList(); }
+        if (maxSalary != null) { vacancies = vacancies.Where(v => v.Salary <= maxSalary).ToList(); }
         var result = _mapper.Map<List<VacancieDto>>(vacancies);
         return result;
     }

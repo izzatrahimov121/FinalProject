@@ -37,4 +37,30 @@ public class FileService : IFileService
         }
         throw new Exception();
     }
+
+    public async Task<string> CopyDocumentAsync(IFormFile file, string wwwroot, params string[] folders)
+    {
+        string filename = String.Empty;
+        if (file != null)
+        {
+            if (file.CheckFileFormat("application/pdf") || file.CheckFileFormat("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+            {
+                if (!file.CheckFileSize(6020)) { throw new IncorrectFileSizeException("Incorrect file size"); }
+                filename = Guid.NewGuid().ToString() + file.FileName;
+                string resultPath = wwwroot;
+                foreach (var folder in folders)
+                {
+                    resultPath = Path.Combine(resultPath, folder);
+                }
+                resultPath = Path.Combine(resultPath, filename);
+                using (FileStream stream = new FileStream(resultPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                return filename;
+            }
+            throw new IncorrectFileFormatException("Incorrect file format");
+        }
+        throw new Exception();
+    }
 }

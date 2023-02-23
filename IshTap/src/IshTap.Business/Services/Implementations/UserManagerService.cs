@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using IshTap.Business.DTOs.Auth;
+﻿using IshTap.Business.DTOs.Auth;
 using IshTap.Business.Exceptions;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
