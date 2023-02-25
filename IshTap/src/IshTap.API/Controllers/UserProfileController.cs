@@ -17,13 +17,16 @@ public class UserProfileController : ControllerBase
     private readonly UserManager<AppUser> _userManager;
     private readonly IUserProfileService _userProfileService;
     private readonly IFavoriteVacancieServices _favoriteVacancieServices;
+    private readonly IApplyJobService _applyJobService;
     public UserProfileController(UserManager<AppUser> userManager,
                                  IUserProfileService userProfileService,
-                                 IFavoriteVacancieServices favoriteVacancieServices)
+                                 IFavoriteVacancieServices favoriteVacancieServices,
+                                 IApplyJobService applyJobService)
     {
         _userManager = userManager;
         _userProfileService = userProfileService;
         _favoriteVacancieServices = favoriteVacancieServices;
+        _applyJobService = applyJobService;
     }
 
     [HttpGet("Profile")]
@@ -123,6 +126,26 @@ public class UserProfileController : ControllerBase
             return Ok(resultCV);
         }
         catch(NotFoundException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    [HttpGet("applyingforvacancies")]
+    public async Task<IActionResult> ApplyingForVacancies()
+    {
+        try
+        {
+            var user = await _userManager.FindByNameAsync(HttpContext.User.Identity?.Name);
+            if (user is null) { throw new NotFoundException("User not found"); }
+            var result = await _applyJobService.Applications(user.Id);
+            return Ok(result);
+        }
+        catch (NotFoundException ex)
         {
             return BadRequest(ex.Message);
         }

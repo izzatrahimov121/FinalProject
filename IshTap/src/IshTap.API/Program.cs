@@ -27,6 +27,7 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(VacancieMapper).Assembly);
 builder.Services.AddAutoMapper(typeof(CvMapper).Assembly);
 builder.Services.AddAutoMapper(typeof(GetInTouchMapper).Assembly);
+builder.Services.AddAutoMapper(typeof(ApplyJobMapper).Assembly);
 
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));

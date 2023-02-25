@@ -49,8 +49,11 @@ namespace IshTap.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Website")
+                    b.Property<string>("UserId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Website")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
