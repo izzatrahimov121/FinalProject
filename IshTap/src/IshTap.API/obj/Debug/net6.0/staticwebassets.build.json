@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "kfjCtJPok44ODbkXBTLMojrP9c8bwYC2LBejBr33FKY=",
+  "Hash": "TiEoREESXiQWEco/593kurTjR7ilx/iER7XThR5YO0E=",
   "Source": "IshTap.API",
   "BasePath": "_content/IshTap.API",
   "Mode": "Default",
@@ -16,6 +16,23 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\Document\\22173acf-e672-46ca-9d68-321bdf5e842cClean Code.pdf",
+      "SourceId": "IshTap.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\",
+      "BasePath": "_content/IshTap.API",
+      "RelativePath": "assets/Document/22173acf-e672-46ca-9d68-321bdf5e842cClean Code.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\Document\\22173acf-e672-46ca-9d68-321bdf5e842cClean Code.pdf"
+    },
     {
       "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\CVs\\98599f8a-c0e4-419d-b5dd-1575005baba0TEst.png",
       "SourceId": "IshTap.API",
@@ -408,6 +425,23 @@
       "OriginalItemSpec": "wwwroot\\assets\\img\\vacancies\\72eac312-df9e-4de5-a260-75c95764133aTEst.png"
     },
     {
+      "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\808123f6-2e3f-412b-9042-cac63fa5ba99indir.jpg",
+      "SourceId": "IshTap.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\",
+      "BasePath": "_content/IshTap.API",
+      "RelativePath": "assets/img/vacancies/808123f6-2e3f-412b-9042-cac63fa5ba99indir.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\img\\vacancies\\808123f6-2e3f-412b-9042-cac63fa5ba99indir.jpg"
+    },
+    {
       "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\8c4a402a-eaff-44e0-a203-6a5593827300thumb2-4k-windows-10-black-background-material-design-gray-logo.jpg",
       "SourceId": "IshTap.API",
       "SourceType": "Discovered",
@@ -423,6 +457,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\img\\vacancies\\8c4a402a-eaff-44e0-a203-6a5593827300thumb2-4k-windows-10-black-background-material-design-gray-logo.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\8d68bfa0-c077-4e85-bcfa-5317409a4630indir.jpg",
+      "SourceId": "IshTap.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\",
+      "BasePath": "_content/IshTap.API",
+      "RelativePath": "assets/img/vacancies/8d68bfa0-c077-4e85-bcfa-5317409a4630indir.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\img\\vacancies\\8d68bfa0-c077-4e85-bcfa-5317409a4630indir.jpg"
     },
     {
       "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\99bfef28-fbf7-452c-bfde-7e81f79f8b5findir.jpg",

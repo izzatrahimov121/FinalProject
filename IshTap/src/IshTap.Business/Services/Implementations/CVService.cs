@@ -66,7 +66,7 @@ public class CVService : ICVService
             ExperienceId = cv.ExperienceId,
             UserId = userId,
             PublishedOn = DateTime.Now,
-            ExpireOn = DateTime.Now.AddDays(30),
+            ExpireOn = DateTime.Now.AddSeconds(30),
         };
         var category = await _categoryRepository.FindByIdAsync(cv.CategoryId);
         category.UsesCount += 1;
@@ -120,14 +120,6 @@ public class CVService : ICVService
     public async Task<List<CVDto>> FindAllAsync()
     {
         var cvs = await _cvRepository.FindAll().Where(c=>c.IsActive==true).ToListAsync();
-        //foreach (var cv in cvs)
-        //{
-        //    if (cv.IsActive == true && DateTime.Now >= cv.ExpireOn)
-        //    {
-        //        cv.IsActive = false;
-        //        _cvRepository.Update(cv);
-        //    }
-        //}
         List<CVDto> resultCV = new List<CVDto>();
         foreach (var cv in cvs)
         {

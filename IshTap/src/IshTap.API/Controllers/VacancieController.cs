@@ -198,20 +198,6 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("FilterByDateJobtypeCategory")]
-    public async Task<IActionResult> FilterByDateJobtypeCategoryAsync(int date = 60, int? categoryId = null, int? jobtypeId = null)
-    {
-        try
-        {
-            var vacancies = await _vacancieService.FilterByDateJobtypeCategoryAsync(date, jobtypeId, categoryId);
-            return Ok(vacancies);
-        }
-        catch (Exception ex)
-        {
-            return NotFound(ex.Message);
-        }
-    }
-
     [HttpGet("LastVacancies")]
     public async Task<IActionResult> LastVacanciesAsync()
     {

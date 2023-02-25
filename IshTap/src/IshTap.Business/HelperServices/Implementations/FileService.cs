@@ -45,7 +45,7 @@ public class FileService : IFileService
         {
             if (file.CheckFileFormat("application/pdf") || file.CheckFileFormat("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
             {
-                if (!file.CheckFileSize(6020)) { throw new IncorrectFileSizeException("Incorrect file size"); }
+                if (!file.CheckFileSize(10240)) { throw new IncorrectFileSizeException("Incorrect file size"); }
                 filename = Guid.NewGuid().ToString() + file.FileName;
                 string resultPath = wwwroot;
                 foreach (var folder in folders)

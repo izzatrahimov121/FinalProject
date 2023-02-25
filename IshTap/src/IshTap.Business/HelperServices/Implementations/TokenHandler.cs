@@ -24,11 +24,11 @@ public class TokenHandler : ITokenHandler
     public async Task<TokenResponseDto> GenerateTokenAsync(AppUser user, int minute)
     {
         List<Claim> claims = new()
-            {
+        {
             new Claim(ClaimTypes.Name, user.UserName),
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Email, user.Email)
-            };
+        };
 
         var roles = await _userManager.GetRolesAsync(user);
         foreach (var role in roles)

@@ -26,6 +26,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(VacancieMapper).Assembly);
 builder.Services.AddAutoMapper(typeof(CvMapper).Assembly);
+builder.Services.AddAutoMapper(typeof(GetInTouchMapper).Assembly);
 
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
@@ -79,6 +80,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 
+
 #region Add service and repository
 //add repository
 builder.Services.AddScoped<IVacancieRepository, VacancieRepository>();
@@ -111,6 +113,14 @@ builder.Services.AddScoped<ITokenHandler, T.TokenHandler>();
 builder.Services.AddSingleton<IFileService, FileService>();
 
 #endregion
+
+// ADD MyBackgroundService
+builder.Services.AddHostedService<MyBackgroundService>();
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole();
+    loggingBuilder.AddDebug();
+});
 
 
 builder.Services.AddScoped<AppDbContextInitializer>();

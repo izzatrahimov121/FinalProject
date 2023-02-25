@@ -5,8 +5,6 @@ using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
 using IshTap.Core.Enums;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json.Linq;
-using static System.Net.WebRequestMethods;
 
 namespace IshTap.Business.Services.Implementations;
 
