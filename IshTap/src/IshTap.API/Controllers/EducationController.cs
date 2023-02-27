@@ -9,7 +9,7 @@ namespace IshTap.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles ="Admin,Member")]
+[Authorize(Roles = "Admin,Member")]
 public class EducationController : ControllerBase
 {
     private readonly IEducationService _educationService;
@@ -19,7 +19,7 @@ public class EducationController : ControllerBase
         _educationService = educationService;
     }
 
-    [HttpGet("")]
+    [HttpGet]
     public async Task<IActionResult> Get()
     {
         try
@@ -36,25 +36,7 @@ public class EducationController : ControllerBase
         }
     }
 
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        try
-        {
-            return Ok(await _educationService.FindByIdAsync(id));
-        }
-        catch (ArgumentNullException ex)
-        {
-            return NotFound(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [HttpPost("")]
+    [HttpPost("create")]
     public async Task<IActionResult> Create(EducationCreateDto education)
     {
         try
@@ -62,9 +44,9 @@ public class EducationController : ControllerBase
             await _educationService.CreateAsync(education);
             return StatusCode((int)HttpStatusCode.Created);
         }
-        catch(ArgumentNullException ex)
+        catch (ArgumentNullException ex)
         {
-            return NotFound(ex.Message);
+            return BadRequest(ex.Message);
         }
         catch (Exception)
         {
@@ -72,13 +54,18 @@ public class EducationController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id,EducationUpdateDto education)
+    [HttpPut("update/{id}")]
+    public async Task<IActionResult> Update(int id, EducationUpdateDto education)
     {
         try
         {
             await _educationService.UpdateAsync(id, education);
             return StatusCode((int)HttpStatusCode.OK);
+        }
+
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (ArgumentNullException ex)
         {
@@ -90,22 +77,17 @@ public class EducationController : ControllerBase
         }
     }
 
-
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         try
         {
-
+            await _educationService.Delete(id);
             return Ok("Deleted");
         }
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
-        }
-        catch (FormatException ex)
-        {
-            return BadRequest(ex.Message);
         }
         catch (Exception)
         {

@@ -5,115 +5,94 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace IshTap.API.Controllers
+namespace IshTap.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize(Roles = "Admin,Member")]
+public class ExperienceController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize(Roles = "Admin,Member")]
-    public class ExperienceController : ControllerBase
+    private readonly IExperienceService _experienceService;
+
+    public ExperienceController(IExperienceService experienceService)
     {
-        private readonly IExperienceService _experienceService;
+        _experienceService = experienceService;
+    }
 
-        public ExperienceController(IExperienceService experienceService)
+
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        try
         {
-            _experienceService = experienceService;
+            return Ok(await _experienceService.FindAllAsync());
         }
-
-
-
-
-
-        [HttpGet("")]
-        public async Task<IActionResult> Get()
+        catch (NotFoundException ex)
         {
-            try
-            {
-                return Ok(await _experienceService.FindAllAsync());
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return NotFound(ex.Message);
         }
-
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        catch (Exception ex)
         {
-            try
-            {
-                return Ok(await _experienceService.FindByIdAsync(id));
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest(ex.Message);
         }
+    }
 
-        [HttpPost("")]
-        public async Task<IActionResult> Create(ExperienceCreateDto exp)
+    [HttpPost("created")]
+    public async Task<IActionResult> Create(ExperienceCreateDto exp)
+    {
+        try
         {
-            try
-            {
-                await _experienceService.CreateAsync(exp);
-                return StatusCode((int)HttpStatusCode.Created);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            await _experienceService.CreateAsync(exp);
+            return StatusCode((int)HttpStatusCode.Created);
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, ExperienceUpdateDto exp)
+        catch (ArgumentNullException ex)
         {
-            try
-            {
-                await _experienceService.UpdateAsync(id, exp);
-                return StatusCode((int)HttpStatusCode.OK);
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            return BadRequest(ex.Message);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        catch (Exception)
         {
-            try
-            {
-                await _experienceService.Delete(id);
-                return Ok("Deleted");
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    [HttpPut("update/{id}")]
+    public async Task<IActionResult> Update(int id, ExperienceUpdateDto exp)
+    {
+        try
+        {
+            await _experienceService.UpdateAsync(id, exp);
+            return StatusCode((int)HttpStatusCode.OK);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+    [HttpDelete("delete/{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            await _experienceService.Delete(id);
+            return Ok("Deleted");
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
 }

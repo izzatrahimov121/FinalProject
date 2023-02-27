@@ -20,7 +20,7 @@ namespace IshTap.API.Controllers
         }
 
 
-        [HttpGet("")]
+        [HttpGet("All")]
         public async Task<IActionResult> Get()
         {
             try
@@ -34,21 +34,21 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var course = await _categoryService.FindByIdAsync(id);
-                return Ok(course);
+                var category = await _categoryService.FindByIdAsync(id);
+                if (category is null)
+                {
+                    throw new NotFoundException("Category not found");
+                }
+                return Ok(category);
             }
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
             }
             catch (Exception)
             {
@@ -56,16 +56,15 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Put(int id, CategoryUpdateDto category)
         {
             try
             {
                 await _categoryService.UpdateAsync(id, category);
                 return StatusCode((int)HttpStatusCode.OK);
-
             }
-            catch (BadRequestException ex)
+            catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -80,7 +79,7 @@ namespace IshTap.API.Controllers
 
         }
 
-        [HttpPost("")]
+        [HttpPost("created")]
         public async Task<IActionResult> Post(CategoryCreateDto category)
         {
             try
@@ -88,6 +87,10 @@ namespace IshTap.API.Controllers
                 await _categoryService.CreateAsync(category);
                 return StatusCode((int)HttpStatusCode.Created);
             }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
@@ -95,7 +98,7 @@ namespace IshTap.API.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("deleted/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -107,22 +110,18 @@ namespace IshTap.API.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
             catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
 
-        [HttpGet("Top5Category")]
-        public async Task<IActionResult> Top5Category()
+        [HttpPost("TopCategory")]
+        public async Task<IActionResult> TopCategory(int count)
         {
             try
             {
-                return Ok(await _categoryService.Top5Category());
+                return Ok(await _categoryService.TopCategory(count));
             }
             catch (NotFoundException ex)
             {
@@ -130,7 +129,7 @@ namespace IshTap.API.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
     }

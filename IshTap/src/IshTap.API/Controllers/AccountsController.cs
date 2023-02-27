@@ -27,7 +27,7 @@ public class AccountsController : ControllerBase
 
 
     [HttpPost("Register")]
-    public async Task<IActionResult> Register( RegisterDto registerDto)
+    public async Task<IActionResult> Register(RegisterDto registerDto)
     {
         try
         {
@@ -35,6 +35,10 @@ public class AccountsController : ControllerBase
             return Ok("Code sent. Please check your mailbox and complete the registration");
         }
         catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (BadRequestException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -56,11 +60,19 @@ public class AccountsController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+        catch (TimeIsOverException ex)
+        {
+            return BadRequest(ex.Message);
+        }
         catch (UserCreateFailException ex)
         {
             return BadRequest(ex.Message);
         }
-        catch (RoleCreateFailException)
+        catch (RoleCreateFailException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
@@ -85,17 +97,45 @@ public class AccountsController : ControllerBase
         }
     }
 
+    [HttpPost("logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout()
+    {
+        try
+        {
+            // Current user's JWT token
+            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+            if (token != null)
+            {
+                // Invalidate the JWT token in the authentication provider
+                await _signInManager.SignOutAsync();
+
+                // Clear the JWT token from cookies
+                HttpContext.Response.Cookies.Delete("jwt");
+
+                return Ok();
+            }
+            return BadRequest();
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+
+    }
+
     [HttpPost("forgotpassword")]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordDto forgotPassword)
     {
         try
         {
-            //var user = await _userManager.FindByEmailAsync(forgotPassword.Email);
-            //if (user == null) { throw new NotFoundException("User not found"); }
-            //var token = _userManager.GeneratePasswordResetTokenAsync(user);
-            //var link = Url.Action("ResetPassword", "Accounts", new { token, email = user.Email }, Request.Scheme);
             await _authService.ForgotPasswordAsync(forgotPassword);
             return Ok("Link sent. Please check your email");
+        }
+        catch (NotFoundException ex)
+        {
+            return BadRequest(ex.Message);
         }
         catch (Exception)
         {
@@ -104,9 +144,20 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("resetpassword")]
-    public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordDto resetPassword, string email, string token)
+    public async Task<IActionResult> ResetPassword(string email, string token, ResetPasswordDto resetPassword)
     {
-        await _authService.ResetPasswordAsync(email,token,resetPassword);
-        return Ok("Tamam");
+        try
+        {
+            await _authService.ResetPasswordAsync(email, token, resetPassword);
+            return Ok();
+        }
+        catch (ResetPasswordFailException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
     }
 }

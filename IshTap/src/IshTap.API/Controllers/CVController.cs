@@ -25,7 +25,7 @@ public class CVController : ControllerBase
 
 
     [HttpGet("AllCv")]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetAll()
     {
         try
         {
@@ -35,6 +35,10 @@ public class CVController : ControllerBase
         catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
 
@@ -50,10 +54,6 @@ public class CVController : ControllerBase
         {
             return NotFound(ex.Message);
         }
-        catch (FormatException ex)
-        {
-            return BadRequest(ex.Message);
-        }
         catch (Exception)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);
@@ -61,7 +61,7 @@ public class CVController : ControllerBase
     }
 
     [HttpPut("Update/{id}")]
-    public async Task<IActionResult> Put(int id,CVUpdateDto cv)
+    public async Task<IActionResult> Put(int id, [FromForm] CVUpdateDto cv)
     {
         try
         {
@@ -73,10 +73,6 @@ public class CVController : ControllerBase
             return BadRequest(ex.Message);
         }
         catch (IncorrectFileSizeException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (BadRequestException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -92,12 +88,12 @@ public class CVController : ControllerBase
     }
 
     [HttpPost("Created")]
-    public async Task<IActionResult> Post([FromForm]CVCreatedDto cv)
+    public async Task<IActionResult> Post([FromForm] CVCreatedDto cv)
     {
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            await _cvService.CreateAsync(user.Id ,cv);
+            await _cvService.CreateAsync(user.Id, cv);
             return StatusCode((int)HttpStatusCode.Created);
         }
         catch (IncorrectFileFormatException ex)
@@ -126,20 +122,27 @@ public class CVController : ControllerBase
         {
             return NotFound(ex.Message);
         }
-        catch (FormatException ex)
-        {
-            return BadRequest(ex.Message);
-        }
         catch (Exception)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
 
-    [HttpGet("LastVacancies")]
-    public async Task<IActionResult> LastVacancies()
+    [HttpGet("LastCVs")]
+    public async Task<IActionResult> LastCVs(int count)
     {
-        var last = await _cvService.LastVacanciesAsync();
-        return Ok(last);
+        try
+        {
+            var last = await _cvService.LastCVsAsync(count);
+            return Ok(last);
+        }
+        catch(NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
     }
 }

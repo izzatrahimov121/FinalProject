@@ -12,5 +12,5 @@ public interface ICVService
     Task Delete(int id);
     Task<List<CVDto>> FindAllAsync();
     Task<CVDto?> FindByIdAsync(int id);
-    Task<List<CVDto>> LastVacanciesAsync();
+    Task<List<CVDto>> LastCVsAsync(int count);
 }

@@ -21,24 +21,12 @@ public class ExperienceService : IExperienceService
     public async Task<List<Experiences>> FindAllAsync()
     {
         var experience = await _experiencesRepository.FindAll().ToListAsync();
-        if (experience == null)
+        if (experience.Count==0)
         {
             throw new NotFoundException("Empty");
         }
         return experience;
     }
-
-    public async Task<Experiences?> FindByIdAsync(int id)
-    {
-        var experience = await _experiencesRepository.FindByIdAsync(id);
-        if (experience == null)
-        {
-            throw new ArgumentNullException("Null");
-        }
-        return experience;
-    }
-
-
 
     //crude
     public async Task CreateAsync(ExperienceCreateDto experience)
@@ -61,7 +49,7 @@ public class ExperienceService : IExperienceService
         var experience = await _experiencesRepository.FindByIdAsync(id);
         if (experience == null)
         {
-            throw new ArgumentNullException("Null");
+            throw new NotFoundException("Not found");
         }
         _experiencesRepository.Delete(experience);
         await _experiencesRepository.SaveAsync();
@@ -72,7 +60,7 @@ public class ExperienceService : IExperienceService
         var baseExperience = await _experiencesRepository.FindByIdAsync(id);
         if (baseExperience == null)
         {
-            throw new ArgumentNullException("Null");
+            throw new NotFoundException("Not found");
         }
         if (experience == null)
         {

@@ -1,6 +1,8 @@
-﻿using IshTap.Business.DTOs.Auth;
+﻿using IshTap.Business.DTOs.ApplyJob;
+using IshTap.Business.DTOs.Auth;
 using IshTap.Business.DTOs.CV;
 using IshTap.Business.DTOs.Vacancie;
+using IshTap.Business.Exceptions;
 using IshTap.Business.HelperServices.Interfaces;
 using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
@@ -48,6 +50,8 @@ public class UserProfileService : IUserProfileService
         _contexts = contexts;
     }
     private DbSet<AppUser> _table => _contexts.Set<AppUser>();
+
+
     public async Task ChenceImageAsync(string userId,UserImageDto ImageDto)
     {
         var user = await _userManager.FindByIdAsync(userId);
@@ -119,6 +123,16 @@ public class UserProfileService : IUserProfileService
             };
         }
         return resultCV;
+    }
+
+    public async Task ChanceUserInformation(string userId, ChanceUserInformation information)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) { throw new NotFoundException("User not found"); }
+        if (information.NewEmail !=null)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
     }
 
 }

@@ -112,7 +112,7 @@ public class CVService : ICVService
         var cv = await _cvRepository.FindByIdAsync(id);
         if (cv is null)
         {
-            throw new ArgumentNullException(nameof(cv));
+            throw new NotFoundException("Not Found");
         }
         _cvRepository.Delete(cv);
         await _cvRepository.SaveAsync();
@@ -120,6 +120,10 @@ public class CVService : ICVService
     public async Task<List<CVDto>> FindAllAsync()
     {
         var cvs = await _cvRepository.FindAll().Where(c=>c.IsActive==true).ToListAsync();
+        if (cvs is null)
+        {
+            throw new NotFoundException("not found");
+        }
         List<CVDto> resultCV = new List<CVDto>();
         foreach (var cv in cvs)
         {
@@ -189,10 +193,14 @@ public class CVService : ICVService
         };
         return result;
     }
-    public async Task<List<CVDto>> LastVacanciesAsync()
+    public async Task<List<CVDto>> LastCVsAsync(int count)
     {
         var cvs = await _cvRepository.FindAll().Where(c => c.IsActive == true).ToListAsync();
-        var lastCv = await _cvRepository.FindAll().Where(c => c.Id >= cvs.Count - 15).ToListAsync();
+        var lastCv = await _cvRepository.FindAll().Where(c => c.Id >= cvs.Count - count).ToListAsync();
+        if (lastCv is null)
+        {
+            throw new NotFoundException("Not Found");
+        }
         List<CVDto> resultCV = new List<CVDto>();
         foreach (var cv in cvs)
         {

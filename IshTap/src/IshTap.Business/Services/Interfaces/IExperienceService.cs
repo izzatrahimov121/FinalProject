@@ -7,7 +7,6 @@ namespace IshTap.Business.Services.Interfaces;
 public interface IExperienceService
 {
     Task<List<Experiences>> FindAllAsync();
-    Task<Experiences?> FindByIdAsync(int id);
 
     Task CreateAsync(ExperienceCreateDto experience);
     Task UpdateAsync(int id, ExperienceUpdateDto experience);

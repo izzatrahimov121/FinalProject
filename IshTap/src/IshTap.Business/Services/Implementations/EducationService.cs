@@ -21,23 +21,12 @@ public class EducationService : IEducationService
     public async Task<List<Educations>> FindAllAsync()
     {
         var educationTypes = await _educationRepository.FindAll().ToListAsync();
-        if (educationTypes == null)
+        if (educationTypes.Count==0)
         {
             throw new NotFoundException("Empty");
         }
         return educationTypes;
     }
-
-    public async Task<Educations?> FindByIdAsync(int id)
-    {
-        var educationType = await _educationRepository.FindByIdAsync(id);
-        if (educationType == null)
-        {
-            throw new ArgumentNullException("Null");
-        }
-        return educationType;
-    }
-
 
 
     //crude
@@ -72,7 +61,7 @@ public class EducationService : IEducationService
         var baseEducation = await _educationRepository.FindByIdAsync(id);
         if (baseEducation == null)
         {
-            throw new ArgumentNullException("Null");
+            throw new NotFoundException("Not found");
         }
         if (education == null)
         {

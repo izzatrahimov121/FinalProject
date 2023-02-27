@@ -5,6 +5,7 @@ using IshTap.Business.Services.Interfaces;
 using IshTap.Core.Entities;
 using IshTap.Core.Enums;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Policy;
 
 namespace IshTap.Business.Services.Implementations;
 
@@ -103,6 +104,16 @@ public class AuthService : IAuthService
         {
             throw new ArgumentNullException("Null value");
         }
+        var user = await _userManager.FindByNameAsync(registerDto.Username);
+        if (user != null)
+        {
+            throw new BadRequestException("UserName is now used");
+        }
+        user = await _userManager.FindByEmailAsync(registerDto.Email);
+        if (user != null)
+        {
+            throw new BadRequestException("Email is now used");
+        }
         Fullname = registerDto.Fullname;
         Username = registerDto.Username;
         Email = registerDto.Email;
@@ -117,7 +128,7 @@ public class AuthService : IAuthService
         }
         if (DateTime.Now >= CodeLifeTime)
         {
-            throw new NotFoundException("Time is over!");
+            throw new TimeIsOverException("Time is over!");
         }
         if (Code == code)
         {
@@ -125,7 +136,7 @@ public class AuthService : IAuthService
         }
         else
         {
-            throw new NotFoundException("Wrong code! Please try again");
+            throw new UserCreateFailException("Wrong code! Please try again");
         }
     }
     public async Task<TokenResponseDto> LoginAsync(LoginDto loginDto)
@@ -154,18 +165,14 @@ public class AuthService : IAuthService
         var callbackUrl = $"http://localhost:5256/api/Accounts/resetpassword?email={forgotPassword.Email}&token={System.Web.HttpUtility.UrlEncode(token)}";
         await SendMailResetToken(forgotPassword.Email, callbackUrl);
     }
-    public async Task ResetPasswordAsync(string email, string token ,ResetPasswordDto resetPassword)
+    public async Task ResetPasswordAsync(string email, string token, ResetPasswordDto resetPassword)
     {
         var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
-        {
-            throw new NotFoundException("User not found");
-        }
 
         var result = await _userManager.ResetPasswordAsync(user, token, resetPassword.NewPassword);
         if (!result.Succeeded)
         {
-            throw new NotFoundException("Erorr");
+            throw new ResetPasswordFailException("Password Reset Fail");
         }
     }
 }

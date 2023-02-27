@@ -25,7 +25,7 @@ namespace IshTap.API.Controllers
         }
 
         [Authorize]
-        [HttpPost("created")]
+        [HttpPost("GetInTouch")]
         public async Task<IActionResult> Created(GetInTouchDto getInTouchDto)
         {
             try
@@ -37,7 +37,7 @@ namespace IshTap.API.Controllers
             }
             catch (NotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception)
             {
@@ -48,12 +48,31 @@ namespace IshTap.API.Controllers
 
         [Authorize(Roles = "Admin,Member")]
         [HttpGet("messages")]
-        public async Task<IActionResult> Messages()
+        public async Task<IActionResult> AllMessages()
         {
             try
             {
-                var messages = await _getInTouchService.Messages();
+                var messages = await _getInTouchService.AllMessages();
                 return Ok(messages);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [Authorize(Roles = "Admin,Member")]
+        [HttpGet("messages/{id}")]
+        public async Task<IActionResult> Message(int id)
+        {
+            try
+            {
+                var result = await _getInTouchService.Message(id);
+                return Ok(result);
+            }
+            catch(NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception)
             {

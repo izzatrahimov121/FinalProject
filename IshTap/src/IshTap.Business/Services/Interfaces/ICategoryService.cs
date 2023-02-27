@@ -7,7 +7,7 @@ public interface ICategoryService
 {
     Task<List<Category>> FindAllAsync();
     Task<Category?> FindByIdAsync(int id);
-    Task<List<Category>> Top5Category();
+    Task<List<Category>> TopCategory(int count);
 
     Task CreateAsync(CategoryCreateDto category);
     Task UpdateAsync(int id, CategoryUpdateDto category);

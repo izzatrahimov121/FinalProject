@@ -44,6 +44,10 @@ public class CategoryService : ICategoryService
 
     public async Task UpdateAsync(int id, CategoryUpdateDto entity)
     {
+        if (entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
         var baseCategory = await _categoryRepository.FindByIdAsync(id);
         if (baseCategory == null)
         {
@@ -73,14 +77,18 @@ public class CategoryService : ICategoryService
         return category;
     }
 
-    public async Task<List<Category>> Top5Category()
+    public async Task<List<Category>> TopCategory(int count)
     {
         var categoryes = await _categoryRepository.FindAll().ToListAsync();
         if (categoryes is null)
         {
             throw new NotFoundException("Not Found");
         }
-        return categoryes.OrderByDescending(c => c.UsesCount).ToList().Take(5).ToList();
+        if (categoryes.Count<count)
+        {
+            throw new NotFoundException("Not Found");
+        }
+        return categoryes.OrderByDescending(c => c.UsesCount).ToList().Take(count).ToList();
     }
 
 }

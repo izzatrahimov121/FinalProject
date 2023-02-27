@@ -7,7 +7,6 @@ namespace IshTap.Business.Services.Interfaces;
 public interface IEducationService
 {
     Task<List<Educations>> FindAllAsync();
-    Task<Educations?> FindByIdAsync(int id);
 
     //crude
     Task CreateAsync(EducationCreateDto education);

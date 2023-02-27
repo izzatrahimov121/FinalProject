@@ -43,10 +43,18 @@ public class GetInTouchService : IGetInTouchService
         await _getInTouchRepository.SaveAsync();
     }
 
-    public async Task<List<GetInTouchDto>> Messages()
+    public async Task<List<GetInTouchDto>> AllMessages()
     {
         var messages = await _getInTouchRepository.FindAll().ToListAsync();
         var result = _mapper.Map<List<GetInTouchDto>>(messages);
+        return result;
+    }
+
+    public async Task<GetInTouchDto> Message(int id)
+    {
+        var message = await _getInTouchRepository.FindByIdAsync(id);
+        if (message == null) { throw new NotFoundException("Not found"); }
+        var result = _mapper.Map<GetInTouchDto>(message);
         return result;
     }
 
