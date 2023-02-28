@@ -6,6 +6,7 @@ using IshTap.Core.Enums;
 using IshTap.DataAccess.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace IshTap.Business.Services.Implementations;
 
@@ -44,8 +45,8 @@ public class UserManagerService : IUserManagerService
     }
     public async Task<AppUserDto?> FindByIdAsync(string id)
     {
-        var baseUser = await _table.FindAsync(id);
-        if (baseUser is null) throw new ArgumentNullException("User is not");
+        var baseUser = await _userManager.FindByIdAsync(id);
+        if (baseUser is null) throw new NotFoundException("User is not");
         var roles = await _userManager.GetRolesAsync(baseUser);
         AppUserDto appuser = new()
         {
@@ -66,7 +67,10 @@ public class UserManagerService : IUserManagerService
             UserName = registerDto.Username,
             Fullname = registerDto.Fullname,
         };
-
+        if (!Enum.IsDefined(typeof(Roles), role))
+        {
+            throw new NotFoundException("Role not found");
+        }
         var identityResult = await _userManager.CreateAsync(user, registerDto.Password);
         if (!identityResult.Succeeded)
         {
@@ -95,24 +99,40 @@ public class UserManagerService : IUserManagerService
     }
     public async Task UpdateUserRoleAsync(string id, Roles role)
     {
-        var user = await _table.FindAsync(id);
-        if (user is null) throw new ArgumentNullException("User is not");
-        var curretRole = await _userManager.GetRolesAsync(user);
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null) throw new NotFoundException("User is not");
+        if (!Enum.IsDefined(typeof(Roles), role))
+        {
+            throw new NotFoundException("Role not found");
+        }
+        var curretRoles = await _userManager.GetRolesAsync(user);
         await _userManager.AddToRoleAsync(user, role.ToString());
-        await _userManager.RemoveFromRoleAsync(user, curretRole.ToString());
+        foreach (var curretRole in curretRoles)
+        {
+            await _userManager.RemoveFromRoleAsync(user, curretRole);
+        }
         await _contexts.SaveChangesAsync();
     }
     public async Task AddUserRoleAsync(string id, Roles role)
     {
-        var user = await _table.FindAsync(id);
-        if (user is null) throw new ArgumentNullException("User is not");
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null) throw new NotFoundException("User is not");
+        if (!Enum.IsDefined(typeof(Roles), role))
+        {
+            throw new NotFoundException("Role not found");
+        }
         await _userManager.AddToRoleAsync(user, role.ToString());
+
         await _contexts.SaveChangesAsync();
     }
     public async Task RemoveUserRoleAsync(string id, Roles role)
     {
-        var user = await _table.FindAsync(id);
-        if (user is null) throw new ArgumentNullException("User is not");
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null) throw new NotFoundException("User is not");
+        if (!Enum.IsDefined(typeof(Roles), role))
+        {
+            throw new NotFoundException("Role not found");
+        }
         var roles = await _userManager.GetRolesAsync(user);
         if (roles.ToList().Count <= 1)
         {
@@ -123,8 +143,8 @@ public class UserManagerService : IUserManagerService
     }
     public async Task DeleteUser(string id)
     {
-        var user = await _table.FindAsync(id);
-        if (user is null) throw new ArgumentNullException("User is not");
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null) throw new NotFoundException("User is not");
         _table.Remove(user);
         await _contexts.SaveChangesAsync();
     }

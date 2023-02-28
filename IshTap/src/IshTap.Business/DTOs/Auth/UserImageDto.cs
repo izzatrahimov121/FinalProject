@@ -4,5 +4,5 @@ namespace IshTap.Business.DTOs.Auth;
 
 public class UserImageDto
 {
-    public IFormFile Image { get; set; }
+    public IFormFile? Image { get; set; }
 }

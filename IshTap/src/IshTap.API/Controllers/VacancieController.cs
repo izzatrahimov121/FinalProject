@@ -23,7 +23,7 @@ public class VacancieController : Controller
         _userManager = userManager;
     }
 
-    [HttpGet("All")]
+    [HttpGet]
     public async Task<IActionResult> Get()
     {
         try
@@ -38,7 +38,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("GetById")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         try
@@ -77,7 +77,7 @@ public class VacancieController : Controller
 
 
     [HttpPut("Update")]
-    public async Task<IActionResult> Put(int id,[FromForm]VacancieUpdateDto vacancie)
+    public async Task<IActionResult> Put(int id, [FromForm] VacancieUpdateDto vacancie)
     {
         try
         {
@@ -110,12 +110,12 @@ public class VacancieController : Controller
 
 
     [HttpPost("Created")]
-    public async Task<IActionResult> Post([FromForm]VacancieCreateDto vacancie)
+    public async Task<IActionResult> Post([FromForm] VacancieCreateDto vacancie)
     {
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            await _vacancieService.CreateAsync(user.Id,vacancie);
+            await _vacancieService.CreateAsync(user.Id, vacancie);
             return StatusCode((int)HttpStatusCode.Created);
         }
         catch (IncorrectFileFormatException ex)
@@ -196,7 +196,6 @@ public class VacancieController : Controller
             return NotFound(ex.Message);
         }
     }
-
 
     [HttpGet("LastVacancies")]
     public async Task<IActionResult> LastVacanciesAsync()

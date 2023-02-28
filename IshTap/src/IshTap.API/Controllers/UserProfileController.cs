@@ -47,7 +47,7 @@ public class UserProfileController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
         catch (Exception)
         {
@@ -66,6 +66,14 @@ public class UserProfileController : ControllerBase
             return Ok("Image changed successfully");
         }
         catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (IncorrectFileFormatException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (IncorrectFileSizeException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -87,7 +95,7 @@ public class UserProfileController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
         catch (Exception)
         {
@@ -95,7 +103,7 @@ public class UserProfileController : ControllerBase
         }
     }
 
-    [HttpGet("fovarite")]
+    [HttpGet("favorites")]
     public async Task<IActionResult> Favorites()
     {
         try
@@ -107,7 +115,7 @@ public class UserProfileController : ControllerBase
         }
         catch(NotFoundException ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
         catch (Exception)
         {
@@ -127,7 +135,7 @@ public class UserProfileController : ControllerBase
         }
         catch(NotFoundException ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
         catch (Exception)
         {
@@ -147,7 +155,7 @@ public class UserProfileController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            return BadRequest(ex.Message);
+            return NotFound(ex.Message);
         }
         catch (Exception)
         {

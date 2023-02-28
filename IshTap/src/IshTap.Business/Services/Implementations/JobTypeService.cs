@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IshTap.Business.Services.Implementations;
 
-public class JobTypeService:IJobTypeService
+public class JobTypeService : IJobTypeService
 {
     private readonly IJobTypeRepository _jobTypeRepository;
 
@@ -20,24 +20,12 @@ public class JobTypeService:IJobTypeService
     public async Task<List<JobType>> FindAllAsync()
     {
         var jobTypes = await _jobTypeRepository.FindAll().ToListAsync();
-        if (jobTypes == null)
+        if (jobTypes.Count==0)
         {
             throw new NotFoundException("Empty");
         }
         return jobTypes;
     }
-
-    public async Task<JobType?> FindByIdAsync(int id)
-    {
-        var jobType = await _jobTypeRepository.FindByIdAsync(id);
-        if (jobType == null)
-        {
-            throw new ArgumentNullException("Null");
-        }
-        return jobType;
-    }
-
-
 
     //crude
     public async Task CreateAsync(JobTypeCreateDto type)
@@ -60,7 +48,7 @@ public class JobTypeService:IJobTypeService
         var jobType = await _jobTypeRepository.FindByIdAsync(id);
         if (jobType == null)
         {
-            throw new ArgumentNullException("Null");
+            throw new NotFoundException("Null");
         }
         _jobTypeRepository.Delete(jobType);
         await _jobTypeRepository.SaveAsync();
@@ -71,7 +59,7 @@ public class JobTypeService:IJobTypeService
         var baseType = await _jobTypeRepository.FindByIdAsync(id);
         if (baseType == null)
         {
-            throw new ArgumentNullException("Null");
+            throw new NotFoundException("Null");
         }
         if (jobType == null)
         {

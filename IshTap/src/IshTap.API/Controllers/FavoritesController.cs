@@ -22,7 +22,7 @@ namespace IshTap.API.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost("add/{vacancieId}")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddFavorites(int vacancieId)
         {
             try
@@ -34,6 +34,10 @@ namespace IshTap.API.Controllers
             }
             catch (NotFoundException ex)
             {
+                return NotFound(ex.Message);
+            }
+            catch(BadRequestException ex)
+            {
                 return BadRequest(ex.Message);
             }
             catch (Exception)
@@ -42,7 +46,7 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> DeleteFovarite(int id)
         {
             try

@@ -20,8 +20,9 @@ namespace IshTap.API.Controllers
             _jobTypeService = jobTypeService;
         }
 
-        [HttpGet("")]
-        public async Task<IActionResult> Get()
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -37,25 +38,7 @@ namespace IshTap.API.Controllers
             }
         }
 
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            try
-            {
-                return Ok(await _jobTypeService.FindByIdAsync(id));
-            }
-            catch (ArgumentNullException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("")]
+        [HttpPost("created")]
         public async Task<IActionResult> Create(JobTypeCreateDto jobType)
         {
             try
@@ -65,7 +48,7 @@ namespace IshTap.API.Controllers
             }
             catch (ArgumentNullException ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (Exception)
             {
@@ -73,7 +56,7 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, JobTypeUpdateDto jobType)
         {
             try
@@ -81,9 +64,13 @@ namespace IshTap.API.Controllers
                 await _jobTypeService.UpdateAsync(id, jobType);
                 return StatusCode((int)HttpStatusCode.OK);
             }
-            catch (ArgumentNullException ex)
+            catch(NotFoundException ex)
             {
                 return NotFound(ex.Message);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception)
             {
@@ -91,7 +78,7 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -102,10 +89,6 @@ namespace IshTap.API.Controllers
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
             }
             catch (Exception)
             {

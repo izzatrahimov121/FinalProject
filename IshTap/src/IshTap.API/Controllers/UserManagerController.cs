@@ -28,7 +28,7 @@ namespace IshTap.API.Controllers
         }
 
         [HttpGet("AllUser")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -40,7 +40,7 @@ namespace IshTap.API.Controllers
             }
         }
 
-        [HttpGet("GetByIdUser")]
+        [HttpGet("GetByIdUser/{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             try
@@ -48,9 +48,9 @@ namespace IshTap.API.Controllers
                 var user = await _userManagerService.FindByIdAsync(id);
                 return Ok(user);
             }
-            catch(ArgumentNullException ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception)
             {
@@ -59,18 +59,22 @@ namespace IshTap.API.Controllers
         }
 
         [HttpPost("CreatedUser")]
-        public async Task<IActionResult> CreatedUser(RegisterDto registerDto,Roles role)
+        public async Task<IActionResult> CreatedUser(RegisterDto registerDto, Roles role)
         {
             try
             {
                 await _userManagerService.CreateAsync(registerDto, role);
                 return Ok("User successfully created");
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (UserCreateFailException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch (RoleCreateFailException)
+            catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
@@ -84,7 +88,7 @@ namespace IshTap.API.Controllers
                 await _userManagerService.UpdateUserRoleAsync(id, role);
                 return Ok("Role successfully updated");
             }
-            catch(ArgumentException ex)
+            catch (NotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -102,29 +106,29 @@ namespace IshTap.API.Controllers
                 await _userManagerService.AddUserRoleAsync(id, role);
                 return Ok("Role successfully added");
             }
-            catch (ArgumentNullException ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
-            catch (RoleCreateFailException)
+            catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
 
-        [HttpPost("RemoveUserRoleAsync")]
-        public async Task<IActionResult> RemoveUserRoleAsync(string id, Roles role)
+        [HttpPost("RemoveUserRole")]
+        public async Task<IActionResult> RemoveUserRole(string id, Roles role)
         {
             try
             {
                 await _userManagerService.RemoveUserRoleAsync(id, role);
                 return Ok("Role successfully remove");
             }
-            catch (ArgumentNullException ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
-            catch(RemoveUserRoleException ex)
+            catch (RemoveUserRoleException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -142,9 +146,9 @@ namespace IshTap.API.Controllers
                 await _userManagerService.DeleteUser(id);
                 return Ok("User successfully deleted");
             }
-            catch (ArgumentNullException ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception)
             {

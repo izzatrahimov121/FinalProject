@@ -64,6 +64,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\Document\a62b2a2f-d8ea-4973-91a2-dff9eaaf6259C_fakepathC_fakepathC_fakepathali riy1 eli (2).docx))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\Document\e334cc83-3ccc-49ab-9b71-e8396284e39eKompüter mühəndisliyinin əsasları dərs1.docx.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>IshTap.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/IshTap.API</BasePath>
+      <RelativePath>assets/Document/e334cc83-3ccc-49ab-9b71-e8396284e39eKompüter mühəndisliyinin əsasları dərs1.docx.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\Document\e334cc83-3ccc-49ab-9b71-e8396284e39eKompüter mühəndisliyinin əsasları dərs1.docx.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\CVs\5b39ccdf-ceee-4b61-9a1f-ae8d53e4d12aindir.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>IshTap.API</SourceId>
@@ -239,6 +255,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\user\75ed4ebe-8783-4e77-8a95-83c01dedfb27indir.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\user\920f88db-7311-4db1-b7b3-45c84836fd6athumb2-4k-windows-10-black-background-material-design-gray-logo.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>IshTap.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/IshTap.API</BasePath>
+      <RelativePath>assets/img/user/920f88db-7311-4db1-b7b3-45c84836fd6athumb2-4k-windows-10-black-background-material-design-gray-logo.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\user\920f88db-7311-4db1-b7b3-45c84836fd6athumb2-4k-windows-10-black-background-material-design-gray-logo.jpg))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\user\957d97d2-fef0-4841-89ff-ec230224ca95indir.jpg))">
       <SourceType>Package</SourceType>
@@ -655,6 +687,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\e7399786-3d93-4381-b37d-e9ad4797a1dcEkran görüntüsü 2023-02-13 173553.png))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\eb987d62-2589-4ef4-9f14-0437f234dbdbindir.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>IshTap.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/IshTap.API</BasePath>
+      <RelativePath>assets/img/vacancies/eb987d62-2589-4ef4-9f14-0437f234dbdbindir.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\eb987d62-2589-4ef4-9f14-0437f234dbdbindir.jpg))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\fa83fde3-e71a-4ab5-a760-ea4dca1b44f0TEst.png))">
       <SourceType>Package</SourceType>

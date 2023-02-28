@@ -53,6 +53,9 @@ namespace IshTap.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("VacancieId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Website")
                         .HasColumnType("nvarchar(max)");
 

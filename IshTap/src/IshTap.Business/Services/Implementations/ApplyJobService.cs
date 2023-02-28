@@ -55,7 +55,8 @@ public class ApplyJobService : IApplyJobService
             Coverletter = applyJob.Coverletter,
             Website = applyJob.Website,
             CV = fileName,
-            UserId = userId
+            UserId = userId,
+            VacancieId = vacancie.Id,
         };
         await _table.AddAsync(apply);
         await _contexts.SaveChangesAsync();
@@ -66,7 +67,16 @@ public class ApplyJobService : IApplyJobService
         var user = await _userManager.FindByIdAsync(userId);
         if (user is null) { throw new NotFoundException("User not found"); }
         var applications = await _table.AsQueryable().AsNoTracking().Where(a=>a.UserId==user.Id).ToListAsync();
-        var result = _mapper.Map<List<ApplyJobDto>>(applications);
+        List<ApplyJob> applyJobs= new List<ApplyJob>();
+        foreach (var application in applications)
+        {
+            var vacancie = await _vacancieRepository.FindByIdAsync(application.VacancieId);
+            if (vacancie.IsActive == true)
+            {
+                applyJobs.Add(application);
+            } 
+        }
+        var result = _mapper.Map<List<ApplyJobDto>>(applyJobs);
         return result;
     }
 

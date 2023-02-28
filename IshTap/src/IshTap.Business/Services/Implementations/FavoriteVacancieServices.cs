@@ -37,6 +37,11 @@ public class FavoriteVacancieServices : IFavoriteVacancieServices
         if (user == null) { throw new NotFoundException("User not found"); }
         var vacancie = await _vacancieRepository.FindByIdAsync(vacancieId);
         if (vacancie == null) { throw new NotFoundException("Vacancie not found"); }
+        var controle = await _table.AsQueryable().AsNoTracking().Where(v => v.UserId == user.Id && v.VacancieId==vacancieId).ToListAsync();
+        if (controle.Count>=1)
+        {
+            throw new BadRequestException("The vacancy has already been added");
+        }
         FavoriteVacancies favorite = new()
         {
             VacancieId = vacancie.Id,
