@@ -56,7 +56,7 @@ public class MyBackgroundService : BackgroundService
                     await _cvRepository.SaveAsync();
 
 
-                    await Task.Delay(TimeSpan.FromSeconds(150), stoppingToken); // 1 day delay
+                    await Task.Delay(TimeSpan.FromHours(6), stoppingToken); // 1 day delay
                 }
             }
             catch (Exception ex)

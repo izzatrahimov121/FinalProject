@@ -153,7 +153,7 @@ public class AuthService : IAuthService
         if (!check) throw new AuthFailException("Username or password incorrect!");
 
         //Create Jwt
-        var tokenResponse = await _tokenHandler.GenerateTokenAsync(user, 120);
+        var tokenResponse = await _tokenHandler.GenerateTokenAsync(user, 360);
 
         return tokenResponse;
     }

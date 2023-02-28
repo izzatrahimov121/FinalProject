@@ -31,9 +31,9 @@ public class VacancieController : Controller
             var vacancies = await _vacancieService.FindAllAsync();
             return Ok(vacancies);
         }
-        catch (NotFoundException ex)
+        catch (Exception)
         {
-            return NotFound(ex.Message);
+            return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
 
@@ -83,7 +83,10 @@ public class VacancieController : Controller
         {
             await _vacancieService.UpdateAsync(id, vacancie);
             return StatusCode((int)HttpStatusCode.OK);
-
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (IncorrectFileFormatException ex)
         {
@@ -92,14 +95,6 @@ public class VacancieController : Controller
         catch (IncorrectFileSizeException ex)
         {
             return BadRequest(ex.Message);
-        }
-        catch (BadRequestException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(ex.Message);
         }
         catch (Exception)
         {
@@ -146,9 +141,38 @@ public class VacancieController : Controller
         {
             return NotFound(ex.Message);
         }
-        catch (FormatException ex)
+        catch (Exception)
         {
-            return BadRequest(ex.Message);
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+
+    [HttpGet("searchByTitle/{title}")]
+    public async Task<IActionResult> GetByTitle(string title)
+    {
+        try
+        {
+            var result = await _vacancieService.FindByConditionAsync(n => n.Title != null ? n.Title.Contains(title) : true);
+            return Ok(result);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
+
+
+    [HttpGet("FilterByCategory")]
+    public async Task<IActionResult> FilterByCategory(int categoryId)
+    {
+        try
+        {
+            return Ok(await _vacancieService.FilterByCategoryAsync(categoryId));
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception)
         {
@@ -158,64 +182,75 @@ public class VacancieController : Controller
 
 
     [HttpGet("FilterByCategoryandJobtype")]
-    public async Task<IActionResult> FilterByCategoryAndJobTypeAsync(int categoryId, int jobtypeId)
+    public async Task<IActionResult> FilterByCategoryAndJobType(int categoryId, int jobtypeId)
     {
         try
         {
             return Ok(await _vacancieService.FilterByCategoryAndJobTypeAsync(categoryId, jobtypeId));
         }
-        catch (ArgumentNullException ex)
+        catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
         }
-    }
-
-
-    [HttpGet("FilterByCategory")]
-    public async Task<IActionResult> FilterByCategoryAsync(int categoryId)
-    {
-        try
+        catch (Exception)
         {
-            return Ok(await _vacancieService.FilterByCategoryAsync(categoryId));
-        }
-        catch (ArgumentNullException ex)
-        {
-            return NotFound(ex.Message);
+            return StatusCode((int)HttpStatusCode.InternalServerError);
         }
     }
+
 
     [HttpGet("FiterByDate")]
-    public async Task<IActionResult> FiterByDateAsync(int date)
+    public async Task<IActionResult> FiterByDate(int date)
     {
         try
         {
             return Ok(await _vacancieService.FiterByDateAsync(date));
         }
-        catch (Exception ex)
+        catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
         }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
     }
 
-    [HttpGet("LastVacancies")]
-    public async Task<IActionResult> LastVacanciesAsync()
-    {
-        var last = await _vacancieService.LastVacanciesAsync();
-        return Ok(last);
-    }
 
     [HttpGet("FilterByCondition")]
-    public async Task<IActionResult> FilterByConditionAsync(int categoryId, int jobtypeId, int minSalary, int maxSalary)
+    public async Task<IActionResult> FilterByCondition(int categoryId, int jobtypeId, int minSalary, int maxSalary)
     {
         try
         {
             var result = await _vacancieService.FilterByConditionAsync(categoryId, jobtypeId, minSalary, maxSalary);
             return Ok(result);
         }
-        catch (Exception ex)
+        catch (NotFoundException ex)
         {
             return NotFound(ex.Message);
         }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
     }
 
+
+    [HttpGet("LastVacancies")]
+    public async Task<IActionResult> LastVacancies(int count)
+    {
+        try
+        {
+            var last = await _vacancieService.LastVacanciesAsync(count);
+            return Ok(last);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError);
+        }
+    }
 }

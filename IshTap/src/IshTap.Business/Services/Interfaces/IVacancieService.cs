@@ -12,7 +12,7 @@ public interface IVacancieService
     Task<List<VacancieDto>> FilterByCategoryAsync(int categoryId);
     Task<List<VacancieDto>> FiterByDateAsync(int date);
     Task<List<VacancieDto>> FilterByConditionAsync(int? categoryId, int? jobtypeId, int? minSalary, int? maxSalary);
-    Task<List<VacancieDto>> LastVacanciesAsync();
+    Task<List<VacancieDto>> LastVacanciesAsync(int count);
     Task<VacancieDto?> FindByIdAsync(int id);
     Task CreateAsync(string userId, VacancieCreateDto vacancie);
     Task UpdateAsync(int id, VacancieUpdateDto vacancie);

@@ -42,7 +42,7 @@ public class VacancieService : IVacancieService
 
     public async Task<List<VacancieDto>> FindAllAsync()
     {
-        var vacancies = await _vacancieRepository.FindAll().ToListAsync();
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
         List<VacancieDto> resultVacancies = new List<VacancieDto>();
         foreach (var vacancie in vacancies)
         {
@@ -105,8 +105,12 @@ public class VacancieService : IVacancieService
     }
     public async Task<List<VacancieDto>> FindByConditionAsync(Expression<Func<Vacancie, bool>> expression)
     {
-        var courses = await _vacancieRepository.FindByCondition(expression).ToListAsync();
-        var result = _mapper.Map<List<VacancieDto>>(courses);
+        var vacancies = await _vacancieRepository.FindByCondition(expression).ToListAsync();
+        if (vacancies.Count==0)
+        {
+            throw new NotFoundException("Vacancies not found");
+        }
+        var result = _mapper.Map<List<VacancieDto>>(vacancies);
         return result;
     }
 
@@ -132,7 +136,7 @@ public class VacancieService : IVacancieService
             Title = vacancie.Title,
             JobDesctiption = vacancie.JobDesctiption,
             PublishedOn = DateTime.Now,
-            ExpireOn = DateTime.Now.AddSeconds(30),
+            ExpireOn = DateTime.Now.AddDays(60),
             Image = fileName,
             Address = vacancie.Address,
             Responsibility = vacancie.Responsibility,
@@ -150,14 +154,14 @@ public class VacancieService : IVacancieService
     }
     public async Task Delete(int id)
     {
-        var baseCourse = await _vacancieRepository.FindByIdAsync(id);
+        var baseVacancie = await _vacancieRepository.FindByIdAsync(id);
 
-        if (baseCourse == null)
+        if (baseVacancie == null)
         {
             throw new NotFoundException("Not Found.");
         }
 
-        _vacancieRepository.Delete(baseCourse);
+        _vacancieRepository.Delete(baseVacancie);
         await _vacancieRepository.SaveAsync();
     }
     public async Task UpdateAsync(int id, VacancieUpdateDto vacancie)
@@ -168,12 +172,11 @@ public class VacancieService : IVacancieService
         {
             throw new NotFoundException("Not Found.");
         }
-        if (vacancie is null)
+        string fileName = String.Empty;
+        if (vacancie.Image != null)
         {
-            throw new ArgumentNullException(nameof(vacancie));
+            fileName = await _fileService.CopyFileAsync(vacancie.Image, _env.WebRootPath, "assets", "img", "vacancies");
         }
-
-        string fileName = await _fileService.CopyFileAsync(vacancie.Image, _env.WebRootPath, "assets", "img", "vacancies");
 
         baseVacancie.Title = vacancie.Title;
         baseVacancie.JobDesctiption = vacancie.JobDesctiption;
@@ -221,7 +224,7 @@ public class VacancieService : IVacancieService
     public async Task<List<VacancieDto>> FilterByCategoryAsync(int categoryId)
     {
         var category = await _categoryRepository.FindByIdAsync(categoryId);
-        if (category == null) { throw new ArgumentNullException(); }
+        if (category == null) { throw new NotFoundException("category not found"); }
 
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true && v.CategoryId == category.Id).ToListAsync();
         var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
@@ -264,13 +267,15 @@ public class VacancieService : IVacancieService
         return result;
     }
     //son 15 vacancie
-    public async Task<List<VacancieDto>> LastVacanciesAsync()
+    public async Task<List<VacancieDto>> LastVacanciesAsync(int count)
     {
         var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
-        var lastVacancies = await _vacancieRepository.FindAll().Where(v => v.Id >= vacancies.Count - 15).ToListAsync();
+        if (count>vacancies.Count)
+        {
+            count = vacancies.Count;
+        }
+        var lastVacancies = await _vacancieRepository.FindAll().Where(v => v.Id >= vacancies.Count - count).ToListAsync();
         var resultVacancies = _mapper.Map<List<VacancieDto>>(vacancies);
         return resultVacancies;
     }
-
-
 }

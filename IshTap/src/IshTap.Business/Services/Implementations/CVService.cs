@@ -196,6 +196,10 @@ public class CVService : ICVService
     public async Task<List<CVDto>> LastCVsAsync(int count)
     {
         var cvs = await _cvRepository.FindAll().Where(c => c.IsActive == true).ToListAsync();
+        if (count>cvs.Count)
+        {
+            count = cvs.Count;
+        }
         var lastCv = await _cvRepository.FindAll().Where(c => c.Id >= cvs.Count - count).ToListAsync();
         if (lastCv is null)
         {
