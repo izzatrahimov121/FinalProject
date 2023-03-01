@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "0WtwDpcMY0jG3MQx/BPFtMwY1W+ZSURFlbAAJIr70oU=",
+  "Hash": "037EgtP3U1++kQkBxWJD2tHW12SQJXzdupxpZ5aqUGk=",
   "Source": "IshTap.API",
   "BasePath": "_content/IshTap.API",
   "Mode": "Default",
@@ -440,6 +440,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\img\\vacancies\\077a6669-d06d-4a70-aeec-68177e92f6a9TEst.png"
+    },
+    {
+      "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\0b1ebca2-39f5-44a4-af28-efe9a982bee2web api.png",
+      "SourceId": "IshTap.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\",
+      "BasePath": "_content/IshTap.API",
+      "RelativePath": "assets/img/vacancies/0b1ebca2-39f5-44a4-af28-efe9a982bee2web api.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\img\\vacancies\\0b1ebca2-39f5-44a4-af28-efe9a982bee2web api.png"
     },
     {
       "Identity": "C:\\Users\\99455\\Desktop\\FinalProect\\IshTap\\src\\IshTap.API\\wwwroot\\assets\\img\\vacancies\\1d69ba18-aadb-4250-af3b-5e37e00e930bTEst.png",

@@ -12,7 +12,7 @@ namespace IshTap.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+
 public class VacancieController : Controller
 {
     private readonly IVacancieService _vacancieService;
@@ -23,12 +23,15 @@ public class VacancieController : Controller
         _userManager = userManager;
     }
 
+
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get(int skipt, int take)
     {
         try
         {
-            var vacancies = await _vacancieService.FindAllAsync();
+            if (skipt == null || skipt < 0) { skipt = 0; }
+            if (take == null || take < 0) { take = 1; }
+            var vacancies = await _vacancieService.FindAllAsync(skipt, take);
             return Ok(vacancies);
         }
         catch (Exception)
@@ -61,21 +64,7 @@ public class VacancieController : Controller
     }
 
 
-    [HttpGet("SearchByTitle")]
-    public async Task<IActionResult> GetByName(string title)
-    {
-        try
-        {
-            var result = await _vacancieService.FindByConditionAsync(n => n.Title != null ? n.Title.Contains(title) : true);
-            return Ok(result);
-        }
-        catch (Exception)
-        {
-            return StatusCode((int)HttpStatusCode.InternalServerError);
-        }
-    }
-
-
+    [Authorize]
     [HttpPut("Update")]
     public async Task<IActionResult> Put(int id, [FromForm] VacancieUpdateDto vacancie)
     {
@@ -103,7 +92,7 @@ public class VacancieController : Controller
 
     }
 
-
+    [Authorize]
     [HttpPost("Created")]
     public async Task<IActionResult> Post([FromForm] VacancieCreateDto vacancie)
     {
@@ -128,7 +117,7 @@ public class VacancieController : Controller
 
     }
 
-
+    [Authorize]
     [HttpDelete("Deleted")]
     public async Task<IActionResult> Delete(int id)
     {

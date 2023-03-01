@@ -11,7 +11,6 @@ namespace IshTap.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class CVController : ControllerBase
 {
     private readonly ICVService _cvService;
@@ -25,11 +24,13 @@ public class CVController : ControllerBase
 
 
     [HttpGet("AllCv")]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(int skipt, int take)
     {
         try
         {
-            var cvs = await _cvService.FindAllAsync();
+            if (skipt == null || skipt<0) { skipt = 0; }
+            if (take == null || take<0) { take = 1; }
+            var cvs = await _cvService.FindAllAsync(skipt,take);
             return Ok(cvs);
         }
         catch (NotFoundException ex)
@@ -60,6 +61,7 @@ public class CVController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("Update/{id}")]
     public async Task<IActionResult> Put(int id, [FromForm] CVUpdateDto cv)
     {
@@ -87,6 +89,7 @@ public class CVController : ControllerBase
 
     }
 
+    [Authorize]
     [HttpPost("Created")]
     public async Task<IActionResult> Post([FromForm] CVCreatedDto cv)
     {
@@ -110,6 +113,7 @@ public class CVController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("Deleted/{id}")]
     public async Task<IActionResult> Delete(int id)
     {

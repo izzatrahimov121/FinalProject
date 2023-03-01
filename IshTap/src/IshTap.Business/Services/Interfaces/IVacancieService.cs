@@ -6,7 +6,7 @@ namespace IshTap.Business.Services.Interfaces;
 
 public interface IVacancieService
 {
-    Task<List<VacancieDto>> FindAllAsync();
+    Task<List<VacancieDto>> FindAllAsync(int skipt, int take);
     Task<List<VacancieDto>> FindByConditionAsync(Expression<Func<Vacancie, bool>> expression);
     Task<List<VacancieDto>> FilterByCategoryAndJobTypeAsync(int? categoryId, int? jobtypeId);
     Task<List<VacancieDto>> FilterByCategoryAsync(int categoryId);

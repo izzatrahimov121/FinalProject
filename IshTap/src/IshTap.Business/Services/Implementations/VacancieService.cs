@@ -40,9 +40,9 @@ public class VacancieService : IVacancieService
 
 
 
-    public async Task<List<VacancieDto>> FindAllAsync()
+    public async Task<List<VacancieDto>> FindAllAsync(int skipt, int take)
     {
-        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).ToListAsync();
+        var vacancies = await _vacancieRepository.FindAll().Where(v => v.IsActive == true).Skip(skipt).Take(take).ToListAsync();
         List<VacancieDto> resultVacancies = new List<VacancieDto>();
         foreach (var vacancie in vacancies)
         {

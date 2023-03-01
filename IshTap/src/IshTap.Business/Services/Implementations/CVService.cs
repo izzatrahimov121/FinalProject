@@ -117,9 +117,9 @@ public class CVService : ICVService
         _cvRepository.Delete(cv);
         await _cvRepository.SaveAsync();
     }
-    public async Task<List<CVDto>> FindAllAsync()
+    public async Task<List<CVDto>> FindAllAsync(int skipt, int take)
     {
-        var cvs = await _cvRepository.FindAll().Where(c=>c.IsActive==true).ToListAsync();
+        var cvs = await _cvRepository.FindAll().Where(c=>c.IsActive==true).Skip(skipt).Take(take).ToListAsync();
         if (cvs is null)
         {
             throw new NotFoundException("not found");

@@ -400,6 +400,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\077a6669-d06d-4a70-aeec-68177e92f6a9TEst.png))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\0b1ebca2-39f5-44a4-af28-efe9a982bee2web api.png))">
+      <SourceType>Package</SourceType>
+      <SourceId>IshTap.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/IshTap.API</BasePath>
+      <RelativePath>assets/img/vacancies/0b1ebca2-39f5-44a4-af28-efe9a982bee2web api.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\0b1ebca2-39f5-44a4-af28-efe9a982bee2web api.png))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\assets\img\vacancies\1d69ba18-aadb-4250-af3b-5e37e00e930bTEst.png))">
       <SourceType>Package</SourceType>
       <SourceId>IshTap.API</SourceId>
