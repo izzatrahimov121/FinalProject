@@ -51,13 +51,13 @@ public class AuthService : IAuthService
     {
         Random rnd = new Random();
         var code = rnd.Next(100000, 999999);
-        var TimeOver = DateTime.Now.AddSeconds(300);
+        
         MailRequestDto mailRequest = new()
         {
             ToEmail = email,
             Subject = "Account verification process",
             Body = $"<h3>Doğrulama kodunuz: {code} </h3>" +
-            $"<br>Kodun etibarlılıq tarixi : {TimeOver.ToString("dd MMMM yyyy HH: mm:ss")}<br>Kodu heçkimlə paylaşmayın <br> " +
+            $"<br>Kodun etibarlılıq tarixi : {DateTime.Now.AddSeconds(300).ToString("dd MMMM yyyy HH: mm:ss")}<br>Kodu heçkimlə paylaşmayın <br> " +
             $"Copyright ©2023 İş Tap | All rights reserved.",
         };
         await _mailService.SendEmailAsync(mailRequest);
